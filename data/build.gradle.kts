@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -5,15 +7,27 @@ plugins {
     alias(libs.plugins.hilt)
 }
 
+val localProperties = Properties().apply {
+    val file = rootProject.file("gradle.properties")
+    if (file.exists()) {
+        load(file.inputStream())
+    }
+}
+
+val discogsToken: String = localProperties["DISCOGS_TOKEN"] as String
+
 android {
     namespace = "com.clara.data"
     compileSdk = 36
+    android.buildFeatures.buildConfig = true
 
     defaultConfig {
         minSdk = 25
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "DISCOGS_TOKEN", "\"$discogsToken\"")
     }
 
     buildTypes {
@@ -31,6 +45,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
 }
 
