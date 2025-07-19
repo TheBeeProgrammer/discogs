@@ -13,5 +13,5 @@ import kotlinx.coroutines.flow.Flow
  * @param Result the type of the result.
  */
 interface FlowExecutableUseCase<in Params, out Result> {
-    operator fun invoke(parameters: Params): Flow<Result>
+    suspend operator fun invoke(parameters: Params): Flow<Result>
 }
