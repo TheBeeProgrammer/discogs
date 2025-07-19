@@ -38,9 +38,7 @@ class DiscogsAuthInterceptor @Inject constructor() : Interceptor {
  * @return A new [Request] with the `token` query parameter added.
  */
 fun Request.withDiscogsToken(token: String): Request {
-    val urlWithToken = url.newBuilder().addQueryParameter("token", token).build()
-
-    return newBuilder().url(urlWithToken).build()
+    return newBuilder().header("Authorization", "Discogs token=$token").build()
 }
 
 /**
