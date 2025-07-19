@@ -1,0 +1,22 @@
+package com.clara.data.di
+
+import com.clara.data.common.mapper.Mapper
+import com.clara.data.remote.entities.ApiArtistSearchResponse
+import com.clara.data.remote.entities.ApiArtistSearchResponseMapper
+import com.clara.domain.model.Artist
+import com.clara.domain.model.PaginatedResult
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+
+@Module
+@InstallIn(SingletonComponent::class)
+object MapperModule {
+
+    @Provides
+    fun provideArtistSearchMapper(): Mapper<ApiArtistSearchResponse, PaginatedResult<List<Artist>>> {
+        return ApiArtistSearchResponseMapper()
+    }
+}
+

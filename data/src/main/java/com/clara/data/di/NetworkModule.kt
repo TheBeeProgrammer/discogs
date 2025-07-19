@@ -11,13 +11,11 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Singleton
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -26,11 +24,11 @@ object NetworkModule {
     @Singleton
     fun provideNetworkStatusInterceptor(
         connectionManager: ConnectionManager
-    ): Interceptor = NetworkStatusInterceptor(connectionManager)
+    ): NetworkStatusInterceptor = NetworkStatusInterceptor(connectionManager)
 
     @Provides
     @Singleton
-    fun provideAuthInterceptor(): Interceptor = DiscogsAuthInterceptor()
+    fun provideAuthInterceptor(): DiscogsAuthInterceptor = DiscogsAuthInterceptor()
 
     @Provides
     @Singleton
@@ -51,18 +49,14 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
-        networkStatusInterceptor: Interceptor,
-        authInterceptor: Interceptor,
-        loggingInterceptor: HttpLoggingInterceptor,
-        errorInterceptor: Interceptor
+        networkStatusInterceptor: NetworkStatusInterceptor,
+        authInterceptor: DiscogsAuthInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(networkStatusInterceptor)
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
-            .addNetworkInterceptor(errorInterceptor)
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
             .build()
     }
 

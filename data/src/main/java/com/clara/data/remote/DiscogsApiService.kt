@@ -5,7 +5,7 @@ import com.clara.data.remote.ApiConstants.PER_PAGE
 import com.clara.data.remote.DiscogsApiService.Companion.DEFAULT_SORT
 import com.clara.data.remote.DiscogsApiService.Companion.DEFAULT_SORT_ORDER
 import com.clara.data.remote.DiscogsApiService.Companion.DEFAULT_TYPE
-import com.clara.data.remote.entities.ApiResult
+import com.clara.data.remote.entities.ApiArtistSearchResponse
 import com.clara.data.remote.entities.ArtistDetailResponse
 import com.clara.data.remote.entities.ArtistReleasesResponse
 import com.clara.data.remote.entities.ArtistSearchResponse
@@ -41,7 +41,7 @@ interface DiscogsApiService {
         @Query("page") page: Int,
         @Query("per_page") perPage: Int = PER_PAGE,
         @Query("type") type: String = DEFAULT_TYPE
-    ): ApiResult<ArtistSearchResponse>
+    ): ApiArtistSearchResponse
 
     /**
      * Retrieves a list of releases by a specific artist.
@@ -60,7 +60,7 @@ interface DiscogsApiService {
         @Query("sort_order") order: String = DEFAULT_SORT_ORDER,
         @Query("page") page: Int = DEFAULT_PAGE,
         @Query("per_page") perPage: Int = PER_PAGE
-    ): ApiResult<ArtistReleasesResponse>
+    ): ArtistReleasesResponse
 
     /**
      * Retrieves detailed information about a specific artist.
@@ -71,7 +71,7 @@ interface DiscogsApiService {
     @GET("artists/{artist_id}")
     suspend fun getArtistDetails(
         @Path("artist_id") artistId: Int
-    ): ApiResult<ArtistDetailResponse>
+    ): ArtistDetailResponse
 
     /**
      * Retrieves detailed information about a specific release.
@@ -82,5 +82,5 @@ interface DiscogsApiService {
     @GET("releases/{release_id}")
     suspend fun getReleaseDetails(
         @Path("release_id") releaseId: Int
-    ): ApiResult<ReleaseDetailResponse>
+    ): ReleaseDetailResponse
 }
