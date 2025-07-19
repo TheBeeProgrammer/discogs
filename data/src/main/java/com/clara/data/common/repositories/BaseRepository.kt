@@ -1,4 +1,4 @@
-package com.clara.data.common.repostiories
+package com.clara.data.common.repositories
 
 import com.clara.domain.usecase.model.UseCaseResult
 import kotlinx.coroutines.flow.Flow
