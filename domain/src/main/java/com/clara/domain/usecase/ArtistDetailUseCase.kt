@@ -19,6 +19,6 @@ class ArtistDetailUseCase @Inject constructor(
     private val repository: ArtistDetailRepository
 ) : ExecutableUseCase<Int, UseCaseResult<Flow<ArtistDetail>>> {
     override suspend fun invoke(params: Int): UseCaseResult<Flow<ArtistDetail>> {
-        return repository.getArtistDetail(params)
+        return repository.getArtistDetail(artistId = params)
     }
 }

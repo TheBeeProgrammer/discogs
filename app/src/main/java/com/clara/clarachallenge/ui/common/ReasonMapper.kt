@@ -10,9 +10,10 @@ import com.clara.domain.usecase.model.UseCaseResult
  *
  * @return A [String] representing the UI message for the reason.
  */
+// TODO: Convert to string resources for localization
 fun UseCaseResult.Reason.toUiMessage(): String = when (this) {
-    UseCaseResult.Reason.Unauthorized -> "You don’t have permission to access this content."
-    UseCaseResult.Reason.NoInternet -> "You're offline. Please check your internet connection."
-    UseCaseResult.Reason.Timeout -> "The request took too long. Please try again."
-    is UseCaseResult.Reason.Unknown -> TODO("Move hardcoded error messages to string resources for localization support")
+    UseCaseResult.Reason.NoInternet -> "📡 No connection. Check your internet!"
+    UseCaseResult.Reason.Timeout -> "⏳ Taking too long. Try again!"
+    UseCaseResult.Reason.NotFound -> "🔍 Artist not found"
+    is UseCaseResult.Reason.Unknown -> "⚠️ Something went wrong"
 }
