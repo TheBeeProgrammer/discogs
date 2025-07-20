@@ -47,8 +47,10 @@ fun ArtistDetailScreen(
             }
         }
 
-        ArtistDetailContent(state) {
-            viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId))
-        }
+        ArtistDetailContent(
+            artistDetailState = state,
+            onRetry = { viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId)) },
+            viewAlbumsClick = { // TODO:  navigate
+            })
     }
 }
