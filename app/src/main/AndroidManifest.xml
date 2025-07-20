@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Clarachallenge">
         <activity
-            android:name=".ui.components.screens.search.SearchScreen"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Clarachallenge">
             <intent-filter>
