@@ -14,6 +14,6 @@ import javax.inject.Inject
  */
 class LoggingInterceptor @Inject constructor() : HttpLoggingInterceptor.Logger {
     override fun log(message: String) {
-        Log.i("HTTP_LOG", message)
+        Log.i(LoggingInterceptor::class.java.canonicalName, message)
     }
 }
