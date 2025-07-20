@@ -1,9 +1,12 @@
 package com.clara.data.di
 
+import com.clara.data.common.mapper.ApiArtistDetailResponseMapper
+import com.clara.data.common.mapper.ApiArtistSearchResponseMapper
+import com.clara.data.common.repositories.ArtistDetailRepositoryImpl
 import com.clara.data.common.repositories.SearchArtistRepositoryImpl
 import com.clara.data.remote.DiscogsApiService
-import com.clara.data.remote.entities.ApiArtistSearchResponseMapper
-import com.clara.domain.SearchArtistRepository
+import com.clara.domain.repositories.ArtistDetailRepository
+import com.clara.domain.repositories.SearchArtistRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,5 +27,13 @@ object RepositoryModule {
     @Provides
     fun provideArtistMapper(): ApiArtistSearchResponseMapper {
         return ApiArtistSearchResponseMapper()
+    }
+
+    @Provides
+    fun provideArtistDetailRepository(
+        apiService: DiscogsApiService,
+        artistDetailMapper: ApiArtistDetailResponseMapper
+    ): ArtistDetailRepository {
+        return ArtistDetailRepositoryImpl(apiService, artistDetailMapper)
     }
 }

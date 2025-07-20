@@ -1,12 +1,12 @@
-package com.clara.data.remote.entities
+package com.clara.data.common.mapper
 
-import com.clara.data.common.mapper.Mapper
+import com.clara.data.remote.entities.ApiArtistSearchResponse
 import com.clara.domain.model.Artist
 import com.clara.domain.model.PaginatedResult
 import javax.inject.Inject
 
 /**
- * Maps an [ApiArtistSearchResponse] to a [PaginatedResult] of [Artist]s.
+ * Maps an [com.clara.data.remote.entities.ApiArtistSearchResponse] to a [com.clara.domain.model.PaginatedResult] of [com.clara.domain.model.Artist]s.
  *
  * This mapper transforms the raw API response for an artist search into a more usable
  * domain model, extracting relevant artist information and pagination details.

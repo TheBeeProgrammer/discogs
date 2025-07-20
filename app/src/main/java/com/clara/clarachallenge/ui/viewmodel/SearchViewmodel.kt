@@ -3,6 +3,7 @@ package com.clara.clarachallenge.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.clara.clarachallenge.ui.common.toUiMessage
 import com.clara.clarachallenge.ui.model.search.SearchArtistAction
 import com.clara.clarachallenge.ui.model.search.SearchArtistEvent
 import com.clara.clarachallenge.ui.model.search.SearchState
@@ -15,6 +16,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
@@ -33,7 +36,9 @@ class SearchArtistViewModel @Inject constructor(
         private const val DEBOUNCE_PERIOD = 300L // 300 milliseconds
     }
 
-    private val searchQuery = MutableStateFlow("")
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
 
     /**
      * A [Flow] of [PagingData] representing the paginated list of artists.
@@ -111,13 +116,7 @@ class SearchArtistViewModel @Inject constructor(
      * @return An empty [Flow] of [PagingData] as the search failed.
      */
     private fun handleSearchFailure(result: UseCaseResult.Failure): Flow<PagingData<Artist>> {
-        val errorState = when (result.reason) {
-            UseCaseResult.Reason.Unauthorized -> SearchState.Error("No Authorization")
-            UseCaseResult.Reason.NoInternet -> SearchState.Error("No internet connection")
-            UseCaseResult.Reason.Timeout -> SearchState.Error("Timeout")
-            else -> SearchState.Error("Unknown Error: ${result.reason}")
-        }
-        updateState { errorState }
+        updateState { SearchState.Error(result.reason.toUiMessage()) }
         return emptyFlow()
     }
 
@@ -136,7 +135,7 @@ class SearchArtistViewModel @Inject constructor(
      * @param query The new search query.
      */
     fun onSearchQueryChange(query: String) {
-        searchQuery.value = query
+        _searchQuery.value = query
     }
 
     /**

@@ -1,6 +1,8 @@
 package com.clara.data.di
 
-import com.clara.domain.SearchArtistRepository
+import com.clara.domain.repositories.ArtistDetailRepository
+import com.clara.domain.repositories.SearchArtistRepository
+import com.clara.domain.usecase.ArtistDetailUseCase
 import com.clara.domain.usecase.SearchArtistUseCase
 import dagger.Module
 import dagger.Provides
@@ -16,6 +18,11 @@ object UseCaseModule {
         repository: SearchArtistRepository
     ): SearchArtistUseCase {
         return SearchArtistUseCase(repository)
+    }
+
+    @Provides
+    fun providesArtistDetailUseCase(repository: ArtistDetailRepository): ArtistDetailUseCase {
+        return ArtistDetailUseCase(repository)
     }
 }
 

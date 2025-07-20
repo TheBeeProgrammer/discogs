@@ -1,7 +1,7 @@
 package com.clara.domain.usecase
 
 import androidx.paging.PagingData
-import com.clara.domain.SearchArtistRepository
+import com.clara.domain.repositories.SearchArtistRepository
 import com.clara.domain.model.Artist
 import com.clara.domain.usecase.base.ExecutableUseCase
 import com.clara.domain.usecase.model.UseCaseResult

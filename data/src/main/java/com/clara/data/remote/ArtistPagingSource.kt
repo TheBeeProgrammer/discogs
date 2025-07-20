@@ -6,7 +6,7 @@ import com.clara.data.remote.ApiConstants.FORBIDDEN_CODE
 import com.clara.data.remote.ApiConstants.UNAUTHORIZED_CODE
 import com.clara.data.remote.PagingSourceConstants.FIRST_PAGE_NUMBER
 import com.clara.data.remote.PagingSourceConstants.MINIMAL_PAGE_NUMBER
-import com.clara.data.remote.entities.ApiArtistSearchResponseMapper
+import com.clara.data.common.mapper.ApiArtistSearchResponseMapper
 import com.clara.domain.model.Artist
 import com.clara.domain.model.ForbiddenException
 import com.clara.domain.model.NetworkUnavailableException
@@ -23,7 +23,7 @@ import javax.inject.Inject
  * the data in a list.
  *
  * @param apiService The [DiscogsApiService] instance used to make network requests.
- * @param mapper The [com.clara.data.remote.entities.ApiArtistSearchResponseMapper] instance used to map API responses to domain models.
+ * @param mapper The [ApiArtistSearchResponseMapper] instance used to map API responses to domain models.
  * @param query The search query string used to filter artists.
  */
 class ArtistPagingSource @Inject constructor(
