@@ -4,6 +4,13 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    id("io.gitlab.arturbosch.detekt") version "1.23.8"
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config = files("$rootDir/detekt.yml")
 }
 
 android {
@@ -58,6 +65,8 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.coil.compose)
+    implementation(libs.androidx.paging.common.android)
+    implementation(libs.androidx.paging.compose)
 
     // --- Testing ---
     testImplementation(libs.junit)
