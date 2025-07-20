@@ -6,7 +6,7 @@ import androidx.paging.PagingData
 import com.clara.data.remote.ArtistPagingSource
 import com.clara.data.remote.ApiConstants
 import com.clara.data.remote.DiscogsApiService
-import com.clara.data.remote.entities.ApiArtistSearchResponseMapper
+import com.clara.data.common.mapper.ApiArtistSearchResponseMapper
 import com.clara.domain.SearchArtistRepository
 import com.clara.domain.model.Artist
 import com.clara.domain.usecase.model.UseCaseResult

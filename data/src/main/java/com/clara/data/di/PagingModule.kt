@@ -2,7 +2,7 @@ package com.clara.data.di
 
 import com.clara.data.remote.ArtistPagingSource
 import com.clara.data.remote.DiscogsApiService
-import com.clara.data.remote.entities.ApiArtistSearchResponseMapper
+import com.clara.data.common.mapper.ApiArtistSearchResponseMapper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
