@@ -3,6 +3,7 @@ package com.clara.clarachallenge.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.clara.clarachallenge.ui.common.toUiMessage
 import com.clara.clarachallenge.ui.model.search.SearchArtistAction
 import com.clara.clarachallenge.ui.model.search.SearchArtistEvent
 import com.clara.clarachallenge.ui.model.search.SearchState
@@ -111,13 +112,7 @@ class SearchArtistViewModel @Inject constructor(
      * @return An empty [Flow] of [PagingData] as the search failed.
      */
     private fun handleSearchFailure(result: UseCaseResult.Failure): Flow<PagingData<Artist>> {
-        val errorState = when (result.reason) {
-            UseCaseResult.Reason.Unauthorized -> SearchState.Error("No Authorization")
-            UseCaseResult.Reason.NoInternet -> SearchState.Error("No internet connection")
-            UseCaseResult.Reason.Timeout -> SearchState.Error("Timeout")
-            else -> SearchState.Error("Unknown Error: ${result.reason}")
-        }
-        updateState { errorState }
+        updateState { SearchState.Error(result.reason.toUiMessage()) }
         return emptyFlow()
     }
 
