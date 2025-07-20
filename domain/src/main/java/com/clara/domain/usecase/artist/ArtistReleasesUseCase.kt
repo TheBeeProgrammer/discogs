@@ -1,4 +1,4 @@
-package com.clara.domain.usecase
+package com.clara.domain.usecase.artist
 
 import androidx.paging.PagingData
 import com.clara.domain.model.Releases

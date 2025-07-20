@@ -3,9 +3,9 @@ package com.clara.data.di.domain
 import com.clara.domain.repositories.ArtistDetailRepository
 import com.clara.domain.repositories.ArtistReleasesRepository
 import com.clara.domain.repositories.SearchArtistRepository
-import com.clara.domain.usecase.ArtistDetailUseCase
-import com.clara.domain.usecase.ArtistReleasesUseCase
-import com.clara.domain.usecase.SearchArtistUseCase
+import com.clara.domain.usecase.artist.ArtistDetailUseCase
+import com.clara.domain.usecase.artist.ArtistReleasesUseCase
+import com.clara.domain.usecase.artist.SearchArtistUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

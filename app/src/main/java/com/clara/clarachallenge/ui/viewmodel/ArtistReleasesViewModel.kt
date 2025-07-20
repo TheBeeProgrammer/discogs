@@ -8,7 +8,7 @@ import com.clara.clarachallenge.ui.model.release.ReleaseListEvent
 import com.clara.clarachallenge.ui.model.release.ReleaseListState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Releases
-import com.clara.domain.usecase.ArtistReleasesUseCase
+import com.clara.domain.usecase.artist.ArtistReleasesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

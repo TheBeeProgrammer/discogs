@@ -1,4 +1,4 @@
-package com.clara.domain.usecase.model
+package com.clara.domain.usecase.base
 
 /**
  * Represents the result of a use case execution.

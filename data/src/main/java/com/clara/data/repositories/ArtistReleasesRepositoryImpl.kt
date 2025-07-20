@@ -6,9 +6,11 @@ import androidx.paging.PagingData
 import com.clara.data.api.ApiConstants
 import com.clara.data.api.DiscogsApiService
 import com.clara.data.mapper.ApiArtistReleaseResponseMapper
+import com.clara.data.repositories.base.BaseRepository
+import com.clara.data.repositories.pagingsource.ArtistReleasesPagingSource
 import com.clara.domain.model.Releases
 import com.clara.domain.repositories.ArtistReleasesRepository
-import com.clara.domain.usecase.model.UseCaseResult
+import com.clara.domain.usecase.base.UseCaseResult
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -27,7 +29,7 @@ class ArtistReleasesRepositoryImpl @Inject constructor(
      * Fetches a paginated list of releases for a given artist.
      *
      * This function uses the [Pager] from the Paging library to handle pagination.
-     * It creates an [ArtistReleasesPagingSource] to fetch data from the [DiscogsApiService]
+     * It creates an [com.clara.data.repositories.pagingsource.ArtistReleasesPagingSource] to fetch data from the [DiscogsApiService]
      * and maps the API response to [Releases] domain models using the provided [mapper].
      *
      * @param artistId The ID of the artist for whom to fetch releases.
@@ -38,7 +40,10 @@ class ArtistReleasesRepositoryImpl @Inject constructor(
     override suspend fun getArtistReleases(artistId: Int): Flow<PagingData<Releases>> {
         val pagingSource = ArtistReleasesPagingSource(apiService, mapper, artistId)
         return Pager(
-            config = PagingConfig(pageSize = ApiConstants.PER_PAGE),
+            config = PagingConfig(
+                pageSize = ApiConstants.PER_PAGE,
+                initialLoadSize = ApiConstants.PER_PAGE
+            ),
             pagingSourceFactory = { pagingSource }
         ).flow
     }

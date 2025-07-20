@@ -1,6 +1,6 @@
 package com.clara.clarachallenge.ui.common
 
-import com.clara.domain.usecase.model.UseCaseResult
+import com.clara.domain.usecase.base.UseCaseResult
 
 /**
  * Converts a [UseCaseResult.Reason] to a user-friendly UI message.
