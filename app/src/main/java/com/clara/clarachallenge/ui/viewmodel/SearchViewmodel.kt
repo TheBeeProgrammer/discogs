@@ -16,6 +16,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.emptyFlow
@@ -34,7 +36,9 @@ class SearchArtistViewModel @Inject constructor(
         private const val DEBOUNCE_PERIOD = 300L // 300 milliseconds
     }
 
-    private val searchQuery = MutableStateFlow("")
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
+
 
     /**
      * A [Flow] of [PagingData] representing the paginated list of artists.
@@ -131,7 +135,7 @@ class SearchArtistViewModel @Inject constructor(
      * @param query The new search query.
      */
     fun onSearchQueryChange(query: String) {
-        searchQuery.value = query
+        _searchQuery.value = query
     }
 
     /**

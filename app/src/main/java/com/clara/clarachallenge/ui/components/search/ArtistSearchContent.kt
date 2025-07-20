@@ -46,18 +46,19 @@ fun ArtistSearchContent(
     modifier: Modifier = Modifier,
     artists: LazyPagingItems<Artist>,
     searchState: SearchState,
+    query: String,
     onSearchQueryChange: (String) -> Unit,
     onArtistClick: (Artist) -> Unit,
     onRetry: () -> Unit,
     onNotFoundArtist: () -> Unit,
 ) {
-    var query by remember { mutableStateOf("") }
-
     Column(modifier = modifier.padding(16.dp)) {
-        SearchBar(query, onQueryChange = {
-            query = it
-            onSearchQueryChange(it)
-        })
+        SearchBar(
+            query = query,
+            onQueryChange = { newQuery ->
+                onSearchQueryChange(newQuery)
+            }
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 

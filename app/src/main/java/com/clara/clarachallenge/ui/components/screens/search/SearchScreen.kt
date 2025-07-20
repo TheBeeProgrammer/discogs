@@ -18,6 +18,7 @@ fun SearchScreen(navController: NavHostController) {
     val viewModel: SearchArtistViewModel = hiltViewModel()
     val pagedArtists = viewModel.pagedArtists.collectAsLazyPagingItems()
     val searchState by viewModel.state.collectAsState()
+    val query by viewModel.searchQuery.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
@@ -32,6 +33,7 @@ fun SearchScreen(navController: NavHostController) {
     ArtistSearchContent(
         artists = pagedArtists,
         searchState = searchState,
+        query = query,
         onSearchQueryChange = { query ->
             viewModel.sendAction(SearchArtistAction.Search(query))
         },
