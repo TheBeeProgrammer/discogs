@@ -60,12 +60,6 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
-    // Local Storage
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.room.paging)
-    ksp(libs.room.compiler)
-
     // Networking
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -78,6 +72,9 @@ dependencies {
     // DI
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+    // Paging
+    implementation(libs.androidx.paging.common.android)
 
     //  Domain Layer
     implementation(project(":domain"))
