@@ -7,9 +7,9 @@ import com.clara.data.api.DiscogsApiService
 import com.clara.data.api.PagingSourceConstants
 import com.clara.data.mapper.ApiArtistSearchResponseMapper
 import com.clara.domain.model.Artist
-import com.clara.domain.model.ForbiddenException
+import com.clara.domain.model.InternalServerErrorException
 import com.clara.domain.model.NetworkUnavailableException
-import com.clara.domain.model.UnauthorizedException
+import com.clara.domain.model.UnknownErrorException
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -43,16 +43,21 @@ class ArtistPagingSource @Inject constructor(
 
             LoadResult.Page(
                 data = paginatedResult.data,
-                prevKey = paginatedResult.currentPage.dec().takeIf { it > PagingSourceConstants.MINIMAL_PAGE_NUMBER },
+                prevKey = paginatedResult.currentPage.dec()
+                    .takeIf { it > PagingSourceConstants.MINIMAL_PAGE_NUMBER },
                 nextKey = (paginatedResult.currentPage + PagingSourceConstants.FIRST_PAGE_NUMBER).takeIf {
                     it <= paginatedResult.totalPages
                 }
             )
         } catch (e: HttpException) {
             when (e.code()) {
-                ApiConstants.UNAUTHORIZED_CODE -> LoadResult.Error(UnauthorizedException(e.message()))
-                ApiConstants.FORBIDDEN_CODE -> LoadResult.Error(ForbiddenException(e.message()))
-                else -> LoadResult.Error(e)
+                ApiConstants.INTERNAL_SERVER_ERROR -> LoadResult.Error(
+                    InternalServerErrorException(
+                        e.message()
+                    )
+                )
+
+                else -> LoadResult.Error(UnknownErrorException(e.message ?: ""))
             }
         } catch (_: IOException) {
             LoadResult.Error(NetworkUnavailableException())

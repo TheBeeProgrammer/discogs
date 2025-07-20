@@ -9,9 +9,7 @@ object ApiConstants {
     internal const val DEFAULT_PAGE = 1
     internal const val PER_PAGE = 30
     internal const val TOKEN = BuildConfig.DISCOGS_TOKEN
-    internal const val UNAUTHORIZED_CODE = 401
-    internal const val FORBIDDEN_CODE = 403
-    internal const val NOT_FOUND_CODE = 404
+    internal const val INTERNAL_SERVER_ERROR = 500
 }
 
 object PagingSourceConstants {
