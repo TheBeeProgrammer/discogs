@@ -1,8 +1,10 @@
 package com.clara.data.repositories
 
+import com.clara.data.remote.ApiConstants.NOT_FOUND_CODE
+import com.clara.domain.model.NetworkUnavailableException
 import com.clara.domain.usecase.model.UseCaseResult
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import retrofit2.HttpException
+import java.net.SocketTimeoutException
 
 abstract class BaseRepository {
 
@@ -18,21 +20,17 @@ abstract class BaseRepository {
     ): UseCaseResult<T> {
         return try {
             UseCaseResult.Success(block())
+        } catch (e: HttpException) {
+            when (e.code()) {
+                NOT_FOUND_CODE -> UseCaseResult.Failure(UseCaseResult.Reason.NotFound)
+                else -> UseCaseResult.Failure(UseCaseResult.Reason.Unknown(e.message()))
+            }
+        } catch (_: NetworkUnavailableException) {
+            UseCaseResult.Failure(UseCaseResult.Reason.NoInternet)
+        } catch (_: SocketTimeoutException) {
+            UseCaseResult.Failure(UseCaseResult.Reason.Timeout)
         } catch (e: Exception) {
             UseCaseResult.Failure(UseCaseResult.Reason.Unknown(e.message ?: "Unknown error"))
-        }
-    }
-
-    /**
-     * Emits a single [UseCaseResult] in a Flow, wrapping a suspending operation.
-     */
-    protected fun <T> safeFlowCall(
-        block: suspend () -> T
-    ): Flow<UseCaseResult<T>> = flow {
-        try {
-            emit(UseCaseResult.Success(block()))
-        } catch (e: Exception) {
-            emit(UseCaseResult.Failure(UseCaseResult.Reason.Unknown(e.message ?: "Unknown error")))
         }
     }
 }

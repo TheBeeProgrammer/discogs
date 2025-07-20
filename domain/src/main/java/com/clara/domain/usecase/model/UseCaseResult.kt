@@ -18,7 +18,7 @@ sealed class UseCaseResult<out T> {
      * This sealed class defines the possible reasons why a use case might fail.
      */
     sealed class Reason {
-        object Unauthorized: Reason()
+        object NotFound: Reason()
         object NoInternet: Reason()
         object Timeout: Reason()
         data class Unknown(val message: String): Reason()

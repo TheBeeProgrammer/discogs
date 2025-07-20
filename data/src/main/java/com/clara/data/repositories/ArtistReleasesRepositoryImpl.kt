@@ -31,17 +31,15 @@ class ArtistReleasesRepositoryImpl @Inject constructor(
      * and maps the API response to [Album] domain models using the provided [mapper].
      *
      * @param artistId The ID of the artist for whom to fetch releases.
-     * @return A [UseCaseResult] containing a [Flow] of [PagingData] of [Album] objects.
+     * @return A [UseCaseResult] containing a [Flow] of [PagingData] of [Releases] objects.
      *         The result will be [UseCaseResult.Success] if the operation is successful,
      *         or [UseCaseResult.Error] if an error occurs.
      */
-    override suspend fun getArtistReleases(artistId: Int): UseCaseResult<Flow<PagingData<Album>>> {
-        return safeCall {
-            val pagingSource = ArtistReleasesPagingSource(apiService, mapper, artistId)
-            Pager(
-                config = PagingConfig(pageSize = ApiConstants.PER_PAGE),
-                pagingSourceFactory = { pagingSource }
-            ).flow
-        }
+    override suspend fun getArtistReleases(artistId: Int): Flow<PagingData<Releases>> {
+        val pagingSource = ReleasePagingSource(apiService, mapper, artistId)
+        return Pager(
+            config = PagingConfig(pageSize = ApiConstants.PER_PAGE),
+            pagingSourceFactory = { pagingSource }
+        ).flow
     }
 }

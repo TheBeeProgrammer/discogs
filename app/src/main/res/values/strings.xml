@@ -1,3 +1,36 @@
 <resources>
+    <!-- App -->
     <string name="app_name">clarachallenge</string>
+
+    <!-- Defaults -->
+    <string name="unknown_error">Something went wrong please retry in a moment.</string>
+
+    <!-- Search -->
+    <string name="search_artist_hint">Search Artist</string>
+    <string name="no_results_found">No results found</string>
+    <string name="search_prompt">Search for your favorite artists</string>
+    <string name="search_icon_content_description">Search</string>
+    <string name="load_more_artists_error">Failed to load more artists</string>
+    <string name="artists_not_found">Artists not found</string>
+
+    <!-- Artist -->
+    <string name="artist_image_content_description">Artist image: %1$s</string>
+    <string name="artist_profile_title">Profile</string>
+    <string name="artist_members_title">Members</string>
+    <string name="artist_member_active">Active</string>
+    <string name="artist_member_inactive">Inactive</string>
+    <string name="view_releases_button">View releases</string>
+    <string name="view_releases_button_content_description">View releases of this artist</string>
+
+    <!-- Paging Errors -->
+    <string name="error_no_internet">No internet connection. Please try again.</string>
+    <string name="error_unauthorized">You are not authorized. Please login again.</string>
+    <string name="error_forbidden">Access denied. You don\'t have permission to view this.</string>
+
+    <!-- Releases -->
+    <string name="release_content_description">Release Icon</string>
+    <string name="load_more_releases_error">Failed to load more releases</string>
+    <string name="releases_not_found">Releases not found</string>
+    <string name="empty_releases_message">No releases found for this artist</string>
+    <string name="releases_label">Releases</string>
 </resources>

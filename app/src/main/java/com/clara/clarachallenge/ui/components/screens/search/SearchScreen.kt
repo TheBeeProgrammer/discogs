@@ -1,13 +1,15 @@
 package com.clara.clarachallenge.ui.components.screens.search
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.clara.clarachallenge.ui.common.Screen
 import com.clara.clarachallenge.ui.components.search.ArtistSearchContent
 import com.clara.clarachallenge.ui.model.search.SearchArtistAction
 import com.clara.clarachallenge.ui.model.search.SearchArtistEvent
@@ -19,12 +21,13 @@ fun SearchScreen(navController: NavHostController) {
     val pagedArtists = viewModel.pagedArtists.collectAsLazyPagingItems()
     val searchState by viewModel.state.collectAsState()
     val query by viewModel.searchQuery.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.events.collect { event ->
             when (event) {
                 is SearchArtistEvent.ShowError -> {
-                    Log.d("SearchScreen", event.message)
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT)
                 }
             }
         }
@@ -38,13 +41,10 @@ fun SearchScreen(navController: NavHostController) {
             viewModel.sendAction(SearchArtistAction.Search(query))
         },
         onArtistClick = { artist ->
-            navController.navigate("artistDetail/${artist.id}")
+            navController.navigate(Screen.ArtistDetail.createRoute(artist.id))
         },
         onRetry = {
             pagedArtists.retry()
-        },
-        onNotFoundArtist = {
-            viewModel.onPagingError("Artists not found")
         }
     )
 }
