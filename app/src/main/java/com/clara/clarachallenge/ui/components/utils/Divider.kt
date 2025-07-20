@@ -12,6 +12,40 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * A horizontal divider line with customizable appearance.
+ *
+ * @param modifier Modifier to be applied to the divider.
+ * @param thickness Height/thickness of the divider line. Default is 1.dp.
+ * @param color Color of the divider. Default is a low opacity onSurface color from theme.
+ * @param paddingStart Start padding for the divider. Default is 0.dp.
+ * @param paddingEnd End padding for the divider. Default is 0.dp.
+ *
+ * Example usage:
+ *
+ * ```kotlin
+ * Divider()
+ *
+ * // Thicker primary color divider
+ * Divider(
+ *     thickness = 2.dp,
+ *     color = MaterialTheme.colorScheme.primary
+ * )
+ *
+ * // Divider with padding
+ * Divider(
+ *     paddingStart = 16.dp,
+ *     paddingEnd = 16.dp,
+ *     color = Color.Gray
+ * )
+ *
+ * // Full-width themed divider
+ * Divider(
+ *     thickness = 1.dp,
+ *     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
+ * )
+ * ```
+ */
 @Composable
 fun Divider(
     modifier: Modifier = Modifier,

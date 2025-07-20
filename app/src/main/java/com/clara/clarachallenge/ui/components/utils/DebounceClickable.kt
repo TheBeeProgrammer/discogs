@@ -12,8 +12,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-private var lastClickTime = 0L
-
+/**
+ * A [Modifier] that makes a Composable clickable, but debounces clicks to prevent multiple rapid clicks.
+ *
+ * This is useful for preventing accidental double-clicks or multiple submissions of forms.
+ *
+ * @param debounceTime The time in milliseconds to wait before allowing another click. Defaults to 500ms.
+ * @param onClick The lambda to execute when the Composable is clicked. This will be launched in a new coroutine.
+ */
 fun Modifier.debouncedClickable(
     debounceTime: Long = 500L,
     onClick: suspend () -> Unit
