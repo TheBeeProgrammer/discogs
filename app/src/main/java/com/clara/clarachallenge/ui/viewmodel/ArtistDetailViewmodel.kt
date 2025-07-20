@@ -6,15 +6,24 @@ import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailAction
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailEvent
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
-import com.clara.domain.repositories.ArtistDetailRepository
+import com.clara.domain.usecase.ArtistDetailUseCase
 import com.clara.domain.usecase.model.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/**
+ * ViewModel responsible for managing the state and logic of the artist detail screen.
+ *
+ * This ViewModel interacts with the [ArtistDetailUseCase] to fetch artist details and updates
+ * the UI state accordingly. It follows the MVI (Model-View-Intent) pattern, where actions
+ * trigger state updates and events are sent to the UI for side effects.
+ *
+ * @param useCase The use case for fetching artist details.
+ */
 @HiltViewModel
 class ArtistDetailViewModel @Inject constructor(
-    private val repository: ArtistDetailRepository
+    private val useCase: ArtistDetailUseCase
 ) : BaseViewModel<ArtistDetailAction, ArtistDetailState, ArtistDetailEvent>(
     defaultState = ArtistDetailState.Loading
 ) {
@@ -41,7 +50,7 @@ class ArtistDetailViewModel @Inject constructor(
      */
     private fun loadArtist(artistId: Int) {
         viewModelScope.launch {
-            when (val result = repository.getArtistDetail(artistId)) {
+            when (val result = useCase(artistId)) {
                 is UseCaseResult.Success -> {
                     result.data.collect { artistDetail ->
                         updateState { ArtistDetailState.Success(artistDetail) }
