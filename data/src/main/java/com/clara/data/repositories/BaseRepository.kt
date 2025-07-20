@@ -1,6 +1,6 @@
 package com.clara.data.repositories
 
-import com.clara.data.remote.ApiConstants.NOT_FOUND_CODE
+import com.clara.data.api.ApiConstants.NOT_FOUND_CODE
 import com.clara.domain.model.NetworkUnavailableException
 import com.clara.domain.usecase.model.UseCaseResult
 import retrofit2.HttpException
