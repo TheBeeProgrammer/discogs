@@ -2,6 +2,7 @@ package com.clara.data.repositories
 
 import com.clara.data.mapper.ApiArtistDetailResponseMapper
 import com.clara.data.api.DiscogsApiService
+import com.clara.data.repositories.base.BaseRepository
 import com.clara.domain.model.ArtistDetail
 import com.clara.domain.repositories.ArtistDetailRepository
 import com.clara.domain.usecase.base.UseCaseResult

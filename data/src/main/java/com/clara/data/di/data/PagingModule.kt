@@ -3,8 +3,8 @@ package com.clara.data.di.data
 import com.clara.data.api.DiscogsApiService
 import com.clara.data.mapper.ApiArtistReleaseResponseMapper
 import com.clara.data.mapper.ApiArtistSearchResponseMapper
-import com.clara.data.repositories.ArtistReleasesPagingSource
-import com.clara.data.repositories.ArtistPagingSource
+import com.clara.data.repositories.pagingsource.ArtistReleasesPagingSource
+import com.clara.data.repositories.pagingsource.ArtistPagingSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
