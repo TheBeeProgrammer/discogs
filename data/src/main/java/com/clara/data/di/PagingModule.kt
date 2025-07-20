@@ -2,7 +2,7 @@ package com.clara.data.di
 
 import com.clara.data.common.mapper.ApiArtistReleaseResponseMapper
 import com.clara.data.common.mapper.ApiArtistSearchResponseMapper
-import com.clara.data.remote.AlbumPagingSource
+import com.clara.data.remote.ReleasePagingSource
 import com.clara.data.remote.ArtistPagingSource
 import com.clara.data.remote.DiscogsApiService
 import dagger.Module
@@ -35,9 +35,9 @@ object PagingModule {
     fun provideAlbumPagingSource(
         apiService: DiscogsApiService,
         mapper: ApiArtistReleaseResponseMapper
-    ): (Int) -> AlbumPagingSource {
+    ): (Int) -> ReleasePagingSource {
         return { artistId ->
-            AlbumPagingSource(
+            ReleasePagingSource(
                 apiService = apiService,
                 mapper = mapper,
                 artistId = artistId

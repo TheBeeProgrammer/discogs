@@ -1,6 +1,6 @@
 package com.clara.domain.model
 
-data class Album(
+data class Releases(
     val id: String,
     val title: String,
     val releaseYear: String,

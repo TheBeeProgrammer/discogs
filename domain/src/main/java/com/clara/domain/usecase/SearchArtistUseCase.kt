@@ -17,8 +17,8 @@ import javax.inject.Inject
  */
 class SearchArtistUseCase @Inject constructor(
     private val repository: SearchArtistRepository
-) : ExecutableUseCase<String, UseCaseResult<Flow<PagingData<Artist>>>> {
-    override suspend fun invoke(params: String): UseCaseResult<Flow<PagingData<Artist>>> {
+) : ExecutableUseCase<String, Flow<PagingData<Artist>>> {
+    override suspend fun invoke(params: String): Flow<PagingData<Artist>> {
         return repository.searchArtist(params)
     }
 }

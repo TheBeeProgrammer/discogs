@@ -7,7 +7,7 @@ import com.clara.data.remote.ApiConstants.FORBIDDEN_CODE
 import com.clara.data.remote.ApiConstants.UNAUTHORIZED_CODE
 import com.clara.data.remote.PagingSourceConstants.FIRST_PAGE_NUMBER
 import com.clara.data.remote.PagingSourceConstants.MINIMAL_PAGE_NUMBER
-import com.clara.domain.model.Album
+import com.clara.domain.model.Releases
 import com.clara.domain.model.ForbiddenException
 import com.clara.domain.model.NetworkUnavailableException
 import com.clara.domain.model.UnauthorizedException
@@ -16,21 +16,21 @@ import java.io.IOException
 import javax.inject.Inject
 
 /**
- * PagingSource for loading albums from the Discogs API.
+ * PagingSource for loading releases from the Discogs API.
  *
  * This class is responsible for fetching paginated album data for a specific artist.
  *
  * @param apiService The [DiscogsApiService] used to make network requests.
  * @param mapper The [ApiArtistReleaseResponseMapper] used to map API responses to domain models.
- * @param artistId The ID of the artist whose albums are being fetched.
+ * @param artistId The ID of the artist whose releases are being fetched.
  */
-class AlbumPagingSource @Inject constructor(
+class ReleasePagingSource @Inject constructor(
     private val apiService: DiscogsApiService,
     private val mapper: ApiArtistReleaseResponseMapper,
     private val artistId: Int
-) : PagingSource<Int, Album>() {
+) : PagingSource<Int, Releases>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Album> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Releases> {
         return try {
             val response = apiService.getArtistReleases(
                 artistId = artistId,
@@ -59,7 +59,7 @@ class AlbumPagingSource @Inject constructor(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Album>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Releases>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
