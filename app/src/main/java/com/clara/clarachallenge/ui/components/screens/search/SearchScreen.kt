@@ -14,7 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
-import com.clara.clarachallenge.ui.components.search.ArtistSearchScreen
+import com.clara.clarachallenge.ui.components.search.ArtistSearchContent
 import com.clara.clarachallenge.ui.model.search.SearchArtistAction
 import com.clara.clarachallenge.ui.model.search.SearchArtistEvent
 import com.clara.clarachallenge.ui.theme.ClarachallengeTheme
@@ -44,7 +44,7 @@ class SearchScreen : ComponentActivity() {
                         }
                     }
 
-                    ArtistSearchScreen(
+                    ArtistSearchContent(
                         modifier = Modifier.Companion.padding(innerPadding),
                         artists = pagedArtists,
                         searchState = searchState,

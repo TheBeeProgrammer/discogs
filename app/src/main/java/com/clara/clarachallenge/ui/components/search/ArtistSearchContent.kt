@@ -12,9 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,10 +22,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.clara.clarachallenge.ui.components.utils.ErrorView
+import com.clara.clarachallenge.ui.components.utils.LinearLoadingView
 import com.clara.clarachallenge.ui.model.search.SearchState
 import com.clara.domain.model.Artist
 
@@ -43,7 +42,7 @@ import com.clara.domain.model.Artist
  * @param onNotFoundArtist Callback invoked when no artists are found.
  */
 @Composable
-fun ArtistSearchScreen(
+fun ArtistSearchContent(
     modifier: Modifier = Modifier,
     artists: LazyPagingItems<Artist>,
     searchState: SearchState,
@@ -123,7 +122,7 @@ private fun ArtistListContent(
             )
         }
 
-        is LoadState.Loading -> LoadingView()
+        is LoadState.Loading -> LinearLoadingView()
         else -> {
             LazyColumn(
                 modifier = Modifier
@@ -161,7 +160,7 @@ private fun LazyListScope.handlePagingLoadState(
             }
         }
 
-        is LoadState.Loading -> item { LoadingView() }
+        is LoadState.Loading -> item { LinearLoadingView() }
         is LoadState.Error -> item {
             ErrorView(
                 message = "Failed to load more artists",
@@ -201,45 +200,5 @@ private fun IdleView() {
             modifier = Modifier.size(64.dp)
         )
         Text("Search for your favorite artists")
-    }
-}
-
-/**
- * Displays a loading indicator.
- */
-@Composable
-private fun LoadingView() {
-    LinearProgressIndicator(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    )
-}
-
-/**
- * Displays an error message with retry option.
- *
- * @param modifier Modifier for customizing layout appearance.
- * @param message Error message to display.
- * @param onRetry Callback invoked when retrying after an error.
- */
-@Composable
-private fun ErrorView(
-    modifier: Modifier = Modifier,
-    message: String,
-    onRetry: () -> Unit
-) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = message, color = Color.Red)
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(onClick = onRetry) {
-            Text("Retry")
-        }
     }
 }
