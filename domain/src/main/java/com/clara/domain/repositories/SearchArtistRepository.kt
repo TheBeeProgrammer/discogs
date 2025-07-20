@@ -1,4 +1,4 @@
-package com.clara.domain
+package com.clara.domain.repositories
 
 import androidx.paging.PagingData
 import com.clara.domain.model.Artist
