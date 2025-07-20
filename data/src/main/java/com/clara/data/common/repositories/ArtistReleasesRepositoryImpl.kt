@@ -4,9 +4,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.clara.data.common.mapper.ApiArtistReleaseResponseMapper
-import com.clara.data.remote.ReleasePagingSource
 import com.clara.data.remote.ApiConstants
 import com.clara.data.remote.DiscogsApiService
+import com.clara.data.remote.ReleasePagingSource
 import com.clara.domain.model.Releases
 import com.clara.domain.repositories.ArtistReleasesRepository
 import com.clara.domain.usecase.model.UseCaseResult
@@ -36,13 +36,11 @@ class ArtistReleasesRepositoryImpl @Inject constructor(
      *         The result will be [UseCaseResult.Success] if the operation is successful,
      *         or [UseCaseResult.Error] if an error occurs.
      */
-    override suspend fun getArtistReleases(artistId: Int): UseCaseResult<Flow<PagingData<Releases>>> {
-        return safeCall {
-            val pagingSource = ReleasePagingSource(apiService, mapper, artistId)
-            Pager(
-                config = PagingConfig(pageSize = ApiConstants.PER_PAGE),
-                pagingSourceFactory = { pagingSource }
-            ).flow
-        }
+    override suspend fun getArtistReleases(artistId: Int): Flow<PagingData<Releases>> {
+        val pagingSource = ReleasePagingSource(apiService, mapper, artistId)
+        return Pager(
+            config = PagingConfig(pageSize = ApiConstants.PER_PAGE),
+            pagingSourceFactory = { pagingSource }
+        ).flow
     }
 }

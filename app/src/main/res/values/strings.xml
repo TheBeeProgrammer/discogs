@@ -31,5 +31,6 @@
     <string name="release_content_description">Release Icon</string>
     <string name="load_more_releases_error">Failed to load more releases</string>
     <string name="releases_not_found">Releases not found</string>
+    <string name="empty_releases_message">No releases found for this artist</string>
     <string name="releases_label">Releases</string>
 </resources>

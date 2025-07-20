@@ -3,15 +3,12 @@ package com.clara.clarachallenge.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.clara.clarachallenge.ui.common.toUiMessage
 import com.clara.clarachallenge.ui.model.release.ReleaseListAction
 import com.clara.clarachallenge.ui.model.release.ReleaseListEvent
 import com.clara.clarachallenge.ui.model.release.ReleaseListState
-import com.clara.clarachallenge.ui.model.search.SearchState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Releases
 import com.clara.domain.usecase.ArtistReleasesUseCase
-import com.clara.domain.usecase.model.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
@@ -60,31 +57,8 @@ class ArtistReleasesViewModel @Inject constructor(
      */
     private fun loadReleases(artistId: Int) {
         viewModelScope.launch {
-            updateState { ReleaseListState.Loading }
-
-            when (val result = artistReleasesUseCase(artistId)) {
-                is UseCaseResult.Success -> {
-                    _pagedReleases = result.data.cachedIn(viewModelScope)
-                    updateState { ReleaseListState.Success }
-                }
-
-                is UseCaseResult.Failure -> {
-                    updateState {
-                        ReleaseListState.Error(message = result.reason.toUiMessage())
-                    }
-                }
-            }
+            val result = artistReleasesUseCase(artistId)
+            _pagedReleases = result.cachedIn(viewModelScope)
         }
-    }
-
-    /**
-     * Handles errors that occur during the paging process.
-     * It updates the state to [SearchState.Empty] and sends an event to show the error message.
-     *
-     * @param error The error message string to be displayed.
-     */
-    fun onPagingError(error: String) {
-        updateState { ReleaseListState.Empty }
-        sendEvent(ReleaseListEvent.ShowError(error))
     }
 }

@@ -4,7 +4,6 @@ import androidx.paging.PagingData
 import com.clara.domain.model.Releases
 import com.clara.domain.repositories.ArtistReleasesRepository
 import com.clara.domain.usecase.base.ExecutableUseCase
-import com.clara.domain.usecase.model.UseCaseResult
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -17,8 +16,8 @@ import javax.inject.Inject
  */
 class ArtistReleasesUseCase @Inject constructor(
     private val repository: ArtistReleasesRepository
-) : ExecutableUseCase<Int, UseCaseResult<Flow<PagingData<Releases>>>> {
-    override suspend fun invoke(params: Int): UseCaseResult<Flow<PagingData<Releases>>> {
+) : ExecutableUseCase<Int, Flow<PagingData<Releases>>> {
+    override suspend fun invoke(params: Int): Flow<PagingData<Releases>> {
         return repository.getArtistReleases(params)
     }
 

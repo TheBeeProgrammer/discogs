@@ -33,7 +33,4 @@ sealed interface ReleaseListEvent : ViewEvent {
  */
 sealed class ReleaseListState : ViewState {
     object Loading : ReleaseListState()
-    object Success : ReleaseListState()
-    object Empty : ReleaseListState()
-    data class Error(val message: String) : ReleaseListState()
 }
