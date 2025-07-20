@@ -4,7 +4,7 @@ import com.clara.data.mapper.ApiArtistDetailResponseMapper
 import com.clara.data.api.DiscogsApiService
 import com.clara.domain.model.ArtistDetail
 import com.clara.domain.repositories.ArtistDetailRepository
-import com.clara.domain.usecase.model.UseCaseResult
+import com.clara.domain.usecase.base.UseCaseResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
