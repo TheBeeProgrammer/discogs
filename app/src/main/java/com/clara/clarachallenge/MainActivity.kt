@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.clara.clarachallenge.ui.components.screens.album.AlbumListScreen
 import com.clara.clarachallenge.ui.components.screens.artistdetail.ArtistDetailScreen
 import com.clara.clarachallenge.ui.components.screens.search.SearchScreen
 import com.clara.clarachallenge.ui.theme.ClarachallengeTheme
@@ -40,6 +41,18 @@ class MainActivity : ComponentActivity() {
                             artistId?.let {
                                 ArtistDetailScreen(
                                     artistId = it,
+                                    navController = navController,
+                                    onBack = { navController.popBackStack() }
+                                )
+                            }
+                        }
+                        composable("albums/{artistId}") { backStackEntry ->
+                            val artistId =
+                                backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
+                            artistId?.let {
+                                AlbumListScreen(
+                                    artistId = it,
+                                    navController = navController,
                                     onBack = { navController.popBackStack() }
                                 )
                             }

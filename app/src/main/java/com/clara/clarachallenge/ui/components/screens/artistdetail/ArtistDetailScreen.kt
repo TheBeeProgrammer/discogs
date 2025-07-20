@@ -7,6 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.clara.clarachallenge.ui.components.artistdetail.ArtistDetailContent
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailAction
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailEvent
@@ -26,7 +27,8 @@ import com.clara.clarachallenge.ui.viewmodel.ArtistDetailViewModel
 @Composable
 fun ArtistDetailScreen(
     artistId: Int,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    navController: NavHostController
 ) {
     ClarachallengeTheme {
         val viewModel: ArtistDetailViewModel = hiltViewModel()
@@ -50,7 +52,8 @@ fun ArtistDetailScreen(
         ArtistDetailContent(
             artistDetailState = state,
             onRetry = { viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId)) },
-            viewAlbumsClick = { // TODO:  navigate
+            viewAlbumsClick = {
+                navController.navigate("albums/${artistId}")
             })
     }
 }
