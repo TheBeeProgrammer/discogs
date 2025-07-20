@@ -1,14 +1,14 @@
 package com.clara.data.di.domain
 
 import androidx.paging.PagingData
-import com.clara.domain.model.Album
 import com.clara.domain.model.Artist
 import com.clara.domain.model.ArtistDetail
+import com.clara.domain.model.Releases
 import com.clara.domain.usecase.artist.ArtistDetailUseCase
 import com.clara.domain.usecase.artist.ArtistReleasesUseCase
 import com.clara.domain.usecase.artist.SearchArtistUseCase
 import com.clara.domain.usecase.base.ExecutableUseCase
-import com.clara.domain.usecase.model.UseCaseResult
+import com.clara.domain.usecase.base.UseCaseResult
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +22,7 @@ object UseCaseModule {
     @Provides
     fun provideSearchArtistUseCase(
         impl: SearchArtistUseCase
-    ): ExecutableUseCase<String, UseCaseResult<Flow<PagingData<Artist>>>> = impl
+    ): ExecutableUseCase<String, Flow<PagingData<Artist>>> = impl
 
     @Provides
     fun provideArtistDetailUseCase(
@@ -32,6 +32,6 @@ object UseCaseModule {
     @Provides
     fun provideArtisReleasesUseCase(
         impl: ArtistReleasesUseCase
-    ): ExecutableUseCase<Int, UseCaseResult<Flow<PagingData<Album>>>> = impl
+    ): ExecutableUseCase<Int, Flow<PagingData<Releases>>> = impl
 
 }

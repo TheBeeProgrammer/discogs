@@ -3,15 +3,17 @@ package com.clara.clarachallenge.ui.viewmodel.fakes
 import androidx.paging.PagingData
 import com.clara.domain.model.Artist
 import com.clara.domain.usecase.base.ExecutableUseCase
-import com.clara.domain.usecase.model.UseCaseResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 
-class FakeSearchArtistUseCase : ExecutableUseCase<String, UseCaseResult<Flow<PagingData<Artist>>>> {
-    var result: UseCaseResult<Flow<PagingData<Artist>>>? = null
-    var receivedQuery: String? = null
+class FakeSearchArtistUseCase : ExecutableUseCase<String, Flow<PagingData<Artist>>> {
+    var lastReceivedQuery: String = ""
+    var searchResult: Flow<PagingData<Artist>> = flowOf(PagingData.empty())
+    var callCount: Int = 0
 
-    override suspend fun invoke(params: String): UseCaseResult<Flow<PagingData<Artist>>> {
-        receivedQuery = params
-        return result ?: error("Fake result not set")
+    override suspend fun invoke(params: String): Flow<PagingData<Artist>> {
+        callCount++
+        lastReceivedQuery = params
+        return searchResult
     }
 }

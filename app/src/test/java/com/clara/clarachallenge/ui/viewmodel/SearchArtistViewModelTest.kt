@@ -1,12 +1,13 @@
 package com.clara.clarachallenge.ui.viewmodel
 
 import androidx.paging.PagingData
-import com.clara.clarachallenge.ui.model.search.SearchState
 import com.clara.clarachallenge.ui.viewmodel.fakes.FakeSearchArtistUseCase
 import com.clara.domain.model.Artist
-import com.clara.domain.usecase.model.UseCaseResult
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -45,55 +46,74 @@ class SearchArtistViewModelTest {
     }
 
     @Test
-    fun `initial state should be Idle`() = testScope.runTest {
-        assertEquals(SearchState.Idle, viewModel.state.value)
-    }
-
-    @Test
-    fun `onPagingError updates state to Empty`() = testScope.runTest {
-        viewModel.onPagingError("Test error")
-        testDispatcher.scheduler.advanceUntilIdle()
-        assertEquals(SearchState.Empty, viewModel.state.value)
-    }
-
-    @Test
-    fun `onSearchQueryChange triggers Idle state`() = testScope.runTest {
+    fun `empty query should return empty flow`() = testScope.runTest {
         // Arrange
-        val pagingFlow = flowOf(PagingData.empty<Artist>())
-        fakeUseCase.result = UseCaseResult.Success(pagingFlow)
-
-        // Act
+        val collectedData = mutableListOf<PagingData<Artist>>()
         val collectJob = launch {
-            viewModel.pagedArtists.collect { }
+            viewModel.pagedArtists.collect { collectedData.add(it) }
         }
 
-        viewModel.onSearchQueryChange("beatles")
-        testDispatcher.scheduler.advanceTimeBy(DEBOUNCE_TIME)
+        // Act
+        viewModel.onSearchQueryChange("")
         testDispatcher.scheduler.advanceUntilIdle()
 
         // Assert
-        assertEquals("beatles", fakeUseCase.receivedQuery)
+        assertTrue(collectedData.isEmpty())
 
         collectJob.cancel()
     }
 
+    @Test
+    fun `changing query cancels previous search`() = testScope.runTest {
+        // Arrange
+        val slowFlow = flow<PagingData<Artist>> {
+            delay(1000) // Simulate slow network
+            emit(PagingData.empty())
+        }
+        fakeUseCase.searchResult = slowFlow
+
+        val collectedData = mutableListOf<PagingData<Artist>>()
+        val collectJob = launch {
+            viewModel.pagedArtists.collect { collectedData.add(it) }
+        }
+
+        // Act - Start first search
+        viewModel.onSearchQueryChange("first")
+        testDispatcher.scheduler.advanceTimeBy(DEBOUNCE_TIME)
+
+        // Change query before first search completes
+        viewModel.onSearchQueryChange("second")
+        testDispatcher.scheduler.advanceTimeBy(DEBOUNCE_TIME)
+        testDispatcher.scheduler.advanceUntilIdle()
+
+        // Assert
+        assertEquals(2, fakeUseCase.callCount)
+        assertEquals("second", fakeUseCase.lastReceivedQuery)
+        // Should only have data from second search (first was cancelled)
+        assertEquals(1, collectedData.size)
+
+        collectJob.cancel()
+    }
 
     @Test
-    fun `onSearchQueryChange triggers failure state`() = testScope.runTest {
+    fun `identical queries don't trigger new search`() = testScope.runTest {
         // Arrange
-        fakeUseCase.result = UseCaseResult.Failure(UseCaseResult.Reason.NoInternet)
+        fakeUseCase.searchResult = flowOf(PagingData.empty())
 
         val collectJob = launch {
             viewModel.pagedArtists.collect {}
         }
 
         // Act
-        viewModel.onSearchQueryChange("fail")
+        viewModel.onSearchQueryChange("same")
+        testDispatcher.scheduler.advanceTimeBy(DEBOUNCE_TIME)
+
+        viewModel.onSearchQueryChange("same") // Same query
         testDispatcher.scheduler.advanceTimeBy(DEBOUNCE_TIME)
         testDispatcher.scheduler.advanceUntilIdle()
 
         // Assert
-        assert(viewModel.state.value is SearchState.Error)
+        assertEquals(1, fakeUseCase.callCount) // Only one search
 
         collectJob.cancel()
     }

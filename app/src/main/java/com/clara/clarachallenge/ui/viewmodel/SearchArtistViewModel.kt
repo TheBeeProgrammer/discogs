@@ -9,7 +9,7 @@ import com.clara.clarachallenge.ui.model.search.SearchState
 import com.clara.clarachallenge.ui.viewmodel.SearchArtistViewModel.Companion.DEBOUNCE_PERIOD
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Artist
-import com.clara.domain.usecase.artist.SearchArtistUseCase
+import com.clara.domain.usecase.base.ExecutableUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -26,7 +26,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class SearchArtistViewModel @Inject constructor(
-    private val searchArtistsUseCase: @JvmSuppressWildcards ExecutableUseCase<String, UseCaseResult<Flow<PagingData<Artist>>>>
+    private val searchArtistsUseCase: @JvmSuppressWildcards ExecutableUseCase<String, Flow<PagingData<Artist>>>
 ) : BaseViewModel<SearchArtistAction, SearchState, SearchArtistEvent>(
     defaultState = SearchState.Idle
 ) {
