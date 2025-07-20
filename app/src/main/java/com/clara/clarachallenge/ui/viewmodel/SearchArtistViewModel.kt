@@ -3,14 +3,13 @@ package com.clara.clarachallenge.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.clara.clarachallenge.ui.common.toUiMessage
 import com.clara.clarachallenge.ui.model.search.SearchArtistAction
 import com.clara.clarachallenge.ui.model.search.SearchArtistEvent
 import com.clara.clarachallenge.ui.model.search.SearchState
+import com.clara.clarachallenge.ui.viewmodel.SearchArtistViewModel.Companion.DEBOUNCE_PERIOD
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Artist
 import com.clara.domain.usecase.SearchArtistUseCase
-import com.clara.domain.usecase.model.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -42,14 +41,20 @@ class SearchArtistViewModel @Inject constructor(
 
     /**
      * A [Flow] of [PagingData] representing the paginated list of artists.
-     * It observes changes in [searchQuery], applies a debounce period,
-     * ensures distinct queries, and then fetches artists based on the query.
-     * - If the query is blank, it updates the state to [SearchState.Idle] and emits an empty flow.
-     * - If the query is not blank:
-     *   - It calls [searchArtistsUseCase] to fetch artists.
-     *   - On success, it updates the state to [SearchState.Success] and emits the cached [PagingData].
-     *   - On failure, it updates the state to an appropriate [SearchState.Error] based on the [UseCaseResult.Reason]
-     *     and emits an empty flow.
+     *
+     * This flow is derived from the [searchQuery] StateFlow. It incorporates several operators
+     * to optimize search behavior:
+     * - **debounce**: It waits for a specified period ([DEBOUNCE_PERIOD]) after the last
+     *   character is typed before emitting the query. This prevents excessive API calls
+     *   while the user is typing.
+     * - **distinctUntilChanged**: It only emits a new query if it's different from the
+     *   previous one, further reducing redundant searches.
+     * - **flatMapLatest**: This operator is crucial for handling rapidly changing queries.
+     *   When a new query is emitted, it cancels any ongoing work (API call) from the previous
+     *   query and starts a new one with the latest query. It then flattens the resulting
+     *   Flow<PagingData<Artist>> from `handleQuery` into the main flow.
+     *
+     * The actual fetching and state management logic is delegated to the [handleQuery] function.
      */
     val pagedArtists: Flow<PagingData<Artist>> = searchQuery
         .debounce(DEBOUNCE_PERIOD)
@@ -67,7 +72,8 @@ class SearchArtistViewModel @Inject constructor(
         return if (query.isBlank()) {
             handleBlankQuery()
         } else {
-            handleSearchQuery(query)
+            val result = searchArtistsUseCase(query)
+            handleSearchSuccess(result)
         }
     }
 
@@ -83,41 +89,17 @@ class SearchArtistViewModel @Inject constructor(
     }
 
     /**
-     * Handles the search query by calling the searchArtistsUseCase and processing the result.
-     *
-     * @param query The search query string.
-     * @return A Flow of PagingData containing the search results (artists) or an empty flow in case of failure.
-     */
-    private suspend fun handleSearchQuery(query: String): Flow<PagingData<Artist>> {
-        return when (val result = searchArtistsUseCase(query)) {
-            is UseCaseResult.Success -> handleSearchSuccess(result)
-            is UseCaseResult.Failure -> handleSearchFailure(result)
-        }
-    }
-
-    /**
      * Handles a successful search result.
-     * Updates the state to [SearchState.Success] and returns the flow of paginated artist data,
-     * caching it within the [viewModelScope].
+     * It caches the flow of paginated artist data within the [viewModelScope].
+     * Note: This function previously updated the state to [SearchState.Success].
+     * This responsibility has been moved to the collector of [pagedArtists]
+     * to ensure state updates reflect the latest emitted data.
      *
      * @param result The successful result from the use case, containing a flow of [PagingData].
      * @return A [Flow] of [PagingData] containing [Artist] objects, cached in [viewModelScope].
      */
-    private fun handleSearchSuccess(result: UseCaseResult.Success<Flow<PagingData<Artist>>>): Flow<PagingData<Artist>> {
-        updateState { SearchState.Success }
-        return result.data.cachedIn(viewModelScope)
-    }
-
-    /**
-     * Handles the failure of a search operation.
-     * It maps the [UseCaseResult.Reason] to a specific [SearchState.Error] and updates the UI state.
-     *
-     * @param result The [UseCaseResult.Failure] object containing the reason for the failure.
-     * @return An empty [Flow] of [PagingData] as the search failed.
-     */
-    private fun handleSearchFailure(result: UseCaseResult.Failure): Flow<PagingData<Artist>> {
-        updateState { SearchState.Error(result.reason.toUiMessage()) }
-        return emptyFlow()
+    private fun handleSearchSuccess(result: Flow<PagingData<Artist>>): Flow<PagingData<Artist>> {
+        return result.cachedIn(viewModelScope)
     }
 
     override fun handleAction(action: SearchArtistAction) {
@@ -136,16 +118,5 @@ class SearchArtistViewModel @Inject constructor(
      */
     fun onSearchQueryChange(query: String) {
         _searchQuery.value = query
-    }
-
-    /**
-     * Handles errors that occur during the paging process.
-     * It updates the state to [SearchState.Empty] and sends an event to show the error message.
-     *
-     * @param error The error message string to be displayed.
-     */
-    fun onPagingError(error: String) {
-        updateState { SearchState.Empty }
-        sendEvent(SearchArtistEvent.ShowError(error))
     }
 }

@@ -36,5 +36,5 @@ sealed interface ArtistDetailEvent : ViewEvent {
  * These actions are typically triggered by user interactions or lifecycle events.
  */
 sealed interface ArtistDetailAction : ViewAction {
-    data class LoadArtist(val artistId: Int) : ArtistDetailAction
+    data class LoadArtist(val artistId: String) : ArtistDetailAction
 }

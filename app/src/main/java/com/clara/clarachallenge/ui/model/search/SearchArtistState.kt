@@ -24,14 +24,12 @@ sealed interface SearchArtistEvent : ViewEvent {
 /**
  * Represents the different states of the search functionality.
  *
- * - [Idle]: The initial state, no search has been performed.
- * - [Success]: The search was successful and results are available.
- * - [Empty]: The search was successful but no results were found.
- * - [Error]: An error occurred during the search.
+ * This sealed class defines the possible states the search feature can be in,
+ * allowing the UI to react accordingly to each state.
+ *
+ * - [Idle]: The initial state before any search operation has been initiated.
  */
 sealed class SearchState : ViewState {
     object Idle : SearchState()
-    object Success : SearchState()
-    object Empty : SearchState()
-    data class Error(val message: String) : SearchState()
 }
+
