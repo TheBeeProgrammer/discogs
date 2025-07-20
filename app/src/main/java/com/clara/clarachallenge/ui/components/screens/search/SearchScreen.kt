@@ -1,4 +1,4 @@
-package com.clara.clarachallenge
+package com.clara.clarachallenge.ui.components.screens.search
 
 import android.os.Bundle
 import android.util.Log
@@ -22,13 +22,13 @@ import com.clara.clarachallenge.ui.viewmodel.SearchArtistViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class SearchScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             ClarachallengeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                Scaffold(modifier = Modifier.Companion.fillMaxSize()) { innerPadding ->
 
                     val viewModel: SearchArtistViewModel = hiltViewModel()
                     val pagedArtists = viewModel.pagedArtists.collectAsLazyPagingItems()
@@ -38,14 +38,14 @@ class MainActivity : ComponentActivity() {
                         viewModel.events.collect { event ->
                             when (event) {
                                 is SearchArtistEvent.ShowError -> {
-                                    Log.d(MainActivity::class.java.simpleName, event.message)
+                                    Log.d(SearchScreen::class.java.simpleName, event.message)
                                 }
                             }
                         }
                     }
 
                     ArtistSearchScreen(
-                        modifier = Modifier.padding(innerPadding),
+                        modifier = Modifier.Companion.padding(innerPadding),
                         artists = pagedArtists,
                         searchState = searchState,
                         onSearchQueryChange = { query ->
