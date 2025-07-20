@@ -9,7 +9,7 @@ import com.clara.clarachallenge.ui.model.search.SearchArtistEvent
 import com.clara.clarachallenge.ui.model.search.SearchState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Artist
-import com.clara.domain.usecase.SearchArtistUseCase
+import com.clara.domain.usecase.base.ExecutableUseCase
 import com.clara.domain.usecase.model.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class SearchArtistViewModel @Inject constructor(
-    private val searchArtistsUseCase: SearchArtistUseCase
+    private val searchArtistsUseCase: @JvmSuppressWildcards ExecutableUseCase<String, UseCaseResult<Flow<PagingData<Artist>>>>
 ) : BaseViewModel<SearchArtistAction, SearchState, SearchArtistEvent>(
     defaultState = SearchState.Idle
 ) {

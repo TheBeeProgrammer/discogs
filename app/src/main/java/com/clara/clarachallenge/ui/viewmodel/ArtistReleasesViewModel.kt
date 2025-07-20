@@ -11,6 +11,7 @@ import com.clara.clarachallenge.ui.model.search.SearchState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Album
 import com.clara.domain.usecase.ArtistReleasesUseCase
+import com.clara.domain.usecase.base.ExecutableUseCase
 import com.clara.domain.usecase.model.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -33,7 +34,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ArtistReleasesViewModel @Inject constructor(
-    private val getAlbumsUseCase: ArtistReleasesUseCase
+    private val getAlbumsUseCase: @JvmSuppressWildcards ExecutableUseCase<Int, UseCaseResult<Flow<PagingData<Album>>>>
 ) : BaseViewModel<AlbumListAction, AlbumListState, AlbumListEvent>(AlbumListState.Loading) {
 
     private var _pagedAlbums: Flow<PagingData<Album>> = emptyFlow()
