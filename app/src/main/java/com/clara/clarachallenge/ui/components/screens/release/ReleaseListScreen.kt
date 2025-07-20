@@ -21,7 +21,6 @@ fun ReleaseListScreen(
     onBack: () -> Boolean,
 ) {
     val viewModel: ArtistReleasesViewModel = hiltViewModel()
-    val state by viewModel.state.collectAsState()
     val releases = viewModel.pagedReleases.collectAsLazyPagingItems()
     val context = LocalContext.current
 
@@ -41,7 +40,6 @@ fun ReleaseListScreen(
 
     ReleaseListContent(
         releases = releases,
-        releaseListState = state,
         onRetry = { releases.retry() }
     )
 }

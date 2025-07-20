@@ -16,16 +16,14 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.clara.clarachallenge.R
-import com.clara.clarachallenge.ui.components.utils.CircularLoadingView
 import com.clara.clarachallenge.ui.components.utils.ErrorView
 import com.clara.clarachallenge.ui.components.utils.LinearLoadingView
-import com.clara.clarachallenge.ui.model.release.ReleaseListState
+import com.clara.clarachallenge.ui.components.utils.mapErrorToMessage
 import com.clara.domain.model.Releases
 
 @Composable
 fun ReleaseListContent(
     releases: LazyPagingItems<Releases>,
-    releaseListState: ReleaseListState,
     onRetry: () -> Unit
 ) {
     Column(modifier = Modifier.fillMaxSize()) {
@@ -36,37 +34,32 @@ fun ReleaseListContent(
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         )
 
-        if (releaseListState is ReleaseListState.Loading) {
-            CircularLoadingView()
-        } else {
-            val refreshState = releases.loadState.refresh
-            when (refreshState) {
-                is LoadState.Error -> ErrorView(
-                    message = refreshState.error.localizedMessage
-                        ?: stringResource(R.string.unknown_error),
-                    onRetry = onRetry
-                )
+        val refreshState = releases.loadState.refresh
+        when (refreshState) {
+            is LoadState.Error -> ErrorView(
+                message = mapErrorToMessage(refreshState.error),
+                onRetry = onRetry
+            )
 
-                is LoadState.Loading -> LinearLoadingView()
-                else -> if (releases.itemCount == 0) {
-                    EmptyView()
-                } else {
-                    LazyColumn(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        items(releases.itemCount) { index ->
-                            releases[index]?.let { album ->
-                                ReleaseListItem(releases = album)
-                            }
+            is LoadState.Loading -> LinearLoadingView()
+            else -> if (releases.itemCount == 0) {
+                EmptyView()
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    items(releases.itemCount) { index ->
+                        releases[index]?.let { album ->
+                            ReleaseListItem(releases = album)
                         }
-
-                        handleReleasePagingLoadState(
-                            releases = releases,
-                            onRetry = onRetry,
-                        )
                     }
+
+                    handleReleasePagingLoadState(
+                        releases = releases,
+                        onRetry = onRetry,
+                    )
                 }
             }
         }

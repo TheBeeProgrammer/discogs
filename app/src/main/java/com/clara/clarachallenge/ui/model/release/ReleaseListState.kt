@@ -24,13 +24,20 @@ sealed interface ReleaseListEvent : ViewEvent {
 /**
  * Represents the different states of the release list screen.
  *
- * - [Idle]: The initial state, where no data has been loaded yet.
- * - [Loading]: Indicates that releases are currently being fetched or processed.
- * - [Success]: Signifies that releases were successfully loaded and are available.
- * - [Empty]: Indicates that no releases were found for the specified criteria.
- * - [Error]: Represents a state where an error occurred during the process of loading releases.
- *   Contains an error [message] detailing the issue.
+ * This state class is intentionally left minimal because the screen uses Paging 3,
+ * which provides its own mechanism for managing loading, error, and empty states via
+ * the `LoadState` APIs exposed through `LazyPagingItems`.
+ *
+ * As a result, we avoid duplicating UI state and rely directly on Paging's `loadState.refresh`,
+ * `loadState.append`, and `itemCount` to drive the screen behavior.
+ *
+ * For more information, see the
+ * [official Paging 3 documentation](https://developer.android.com/topic/libraries/architecture/paging/v3-overview).
+ *
+ * This sealed class remains in place in case additional view-level state is needed
+ * in the future (e.g., transient flags or UI-level state unrelated to paging).
  */
 sealed class ReleaseListState : ViewState {
-    object Loading : ReleaseListState()
+    object Idle : ReleaseListState()
 }
+
