@@ -10,6 +10,7 @@ object ApiConstants {
     internal const val PER_PAGE = 30
     internal const val TOKEN = BuildConfig.DISCOGS_TOKEN
     internal const val INTERNAL_SERVER_ERROR = 500
+    internal const val NOT_FOUND_CODE = 404
 }
 
 object PagingSourceConstants {
