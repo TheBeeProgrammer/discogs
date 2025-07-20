@@ -1,12 +1,11 @@
-package com.clara.data.remote
+package com.clara.data.repositories
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.clara.data.common.mapper.ApiArtistReleaseResponseMapper
-import com.clara.data.remote.ApiConstants.FORBIDDEN_CODE
-import com.clara.data.remote.ApiConstants.UNAUTHORIZED_CODE
-import com.clara.data.remote.PagingSourceConstants.FIRST_PAGE_NUMBER
-import com.clara.data.remote.PagingSourceConstants.MINIMAL_PAGE_NUMBER
+import com.clara.data.api.ApiConstants
+import com.clara.data.api.DiscogsApiService
+import com.clara.data.api.PagingSourceConstants
+import com.clara.data.mapper.ApiArtistReleaseResponseMapper
 import com.clara.domain.model.Album
 import com.clara.domain.model.ForbiddenException
 import com.clara.domain.model.NetworkUnavailableException
@@ -20,11 +19,11 @@ import javax.inject.Inject
  *
  * This class is responsible for fetching paginated album data for a specific artist.
  *
- * @param apiService The [DiscogsApiService] used to make network requests.
+ * @param apiService The [com.clara.data.api.DiscogsApiService] used to make network requests.
  * @param mapper The [ApiArtistReleaseResponseMapper] used to map API responses to domain models.
  * @param artistId The ID of the artist whose albums are being fetched.
  */
-class AlbumPagingSource @Inject constructor(
+class ArtistReleasesPagingSource @Inject constructor(
     private val apiService: DiscogsApiService,
     private val mapper: ApiArtistReleaseResponseMapper,
     private val artistId: Int
@@ -34,22 +33,22 @@ class AlbumPagingSource @Inject constructor(
         return try {
             val response = apiService.getArtistReleases(
                 artistId = artistId,
-                page = params.key ?: FIRST_PAGE_NUMBER,
+                page = params.key ?: PagingSourceConstants.FIRST_PAGE_NUMBER,
                 perPage = params.loadSize
             )
 
             val paginatedResult = mapper.map(response)
             LoadResult.Page(
                 data = paginatedResult.data,
-                prevKey = paginatedResult.currentPage.dec().takeIf { it > MINIMAL_PAGE_NUMBER },
-                nextKey = (paginatedResult.currentPage + FIRST_PAGE_NUMBER).takeIf {
+                prevKey = paginatedResult.currentPage.dec().takeIf { it > PagingSourceConstants.MINIMAL_PAGE_NUMBER },
+                nextKey = (paginatedResult.currentPage + PagingSourceConstants.FIRST_PAGE_NUMBER).takeIf {
                     it <= paginatedResult.totalPages
                 }
             )
         } catch (e: HttpException) {
             when (e.code()) {
-                UNAUTHORIZED_CODE -> LoadResult.Error(UnauthorizedException(e.message()))
-                FORBIDDEN_CODE -> LoadResult.Error(ForbiddenException(e.message()))
+                ApiConstants.UNAUTHORIZED_CODE -> LoadResult.Error(UnauthorizedException(e.message()))
+                ApiConstants.FORBIDDEN_CODE -> LoadResult.Error(ForbiddenException(e.message()))
                 else -> LoadResult.Error(e)
             }
         } catch (_: IOException) {
