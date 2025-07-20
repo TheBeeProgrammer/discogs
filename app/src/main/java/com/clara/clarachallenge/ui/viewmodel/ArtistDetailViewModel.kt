@@ -7,9 +7,9 @@ import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailEvent
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.ArtistDetail
-import com.clara.domain.usecase.ArtistDetailUseCase
+import com.clara.domain.usecase.artist.ArtistDetailUseCase
 import com.clara.domain.usecase.base.ExecutableUseCase
-import com.clara.domain.usecase.model.UseCaseResult
+import com.clara.domain.usecase.base.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -51,9 +51,9 @@ class ArtistDetailViewModel @Inject constructor(
      *
      * @param artistId The ID of the artist to load.
      */
-    private fun loadArtist(artistId: Int) {
+    private fun loadArtist(artistId: String) {
         viewModelScope.launch {
-            when (val result = useCase(artistId)) {
+            when (val result = useCase(artistId.toInt())) {
                 is UseCaseResult.Success -> {
                     result.data.collect { artistDetail ->
                         updateState { ArtistDetailState.Success(artistDetail) }

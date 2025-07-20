@@ -10,8 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.clara.clarachallenge.ui.components.screens.album.AlbumListScreen
+import com.clara.clarachallenge.ui.common.Screen
 import com.clara.clarachallenge.ui.components.screens.artistdetail.ArtistDetailScreen
+import com.clara.clarachallenge.ui.components.screens.release.ReleaseListScreen
 import com.clara.clarachallenge.ui.components.screens.search.SearchScreen
 import com.clara.clarachallenge.ui.theme.ClarachallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,35 +30,36 @@ class MainActivity : ComponentActivity() {
                 Scaffold { innerPadding ->
                     NavHost(
                         navController = navController,
-                        startDestination = "search",
+                        startDestination = Screen.Search.route,
                         modifier = Modifier.padding(innerPadding)
                     ) {
-                        composable("search") {
+                        composable(Screen.Search.route) {
                             SearchScreen(navController = navController)
                         }
-                        composable("artistDetail/{artistId}") { backStackEntry ->
-                            val artistId =
-                                backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
-                            artistId?.let {
-                                ArtistDetailScreen(
-                                    artistId = it,
-                                    navController = navController,
-                                    onBack = { navController.popBackStack() }
-                                )
-                            }
+
+                        composable(Screen.ArtistDetail.route) { backStackEntry ->
+                            backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
+                                ?.let { artistId ->
+                                    ArtistDetailScreen(
+                                        artistId = artistId.toString(),
+                                        navController = navController,
+                                        onBack = { navController.popBackStack() }
+                                    )
+                                }
                         }
-                        composable("albums/{artistId}") { backStackEntry ->
-                            val artistId =
-                                backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
-                            artistId?.let {
-                                AlbumListScreen(
-                                    artistId = it,
-                                    navController = navController,
-                                    onBack = { navController.popBackStack() }
-                                )
-                            }
+
+                        composable(Screen.Releases.route) { backStackEntry ->
+                            backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
+                                ?.let { artistId ->
+                                    ReleaseListScreen(
+                                        artistId = artistId,
+                                        navController = navController,
+                                        onBack = { navController.popBackStack() }
+                                    )
+                                }
                         }
                     }
+
                 }
             }
         }

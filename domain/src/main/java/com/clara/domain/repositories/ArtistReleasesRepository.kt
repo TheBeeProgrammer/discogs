@@ -1,10 +1,10 @@
 package com.clara.domain.repositories
 
 import androidx.paging.PagingData
-import com.clara.domain.model.Album
-import com.clara.domain.usecase.model.UseCaseResult
+import com.clara.domain.model.Releases
+import com.clara.domain.usecase.base.UseCaseResult
 import kotlinx.coroutines.flow.Flow
 
 interface ArtistReleasesRepository {
-    suspend fun getArtistReleases(artistId: Int): UseCaseResult<Flow<PagingData<Album>>>
+    suspend fun getArtistReleases(artistId: Int): Flow<PagingData<Releases>>
 }

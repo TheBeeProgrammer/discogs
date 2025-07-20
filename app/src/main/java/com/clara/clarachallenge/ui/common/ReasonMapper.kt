@@ -1,6 +1,6 @@
 package com.clara.clarachallenge.ui.common
 
-import com.clara.domain.usecase.model.UseCaseResult
+import com.clara.domain.usecase.base.UseCaseResult
 
 /**
  * Converts a [UseCaseResult.Reason] to a user-friendly UI message.
@@ -10,9 +10,10 @@ import com.clara.domain.usecase.model.UseCaseResult
  *
  * @return A [String] representing the UI message for the reason.
  */
+// TODO: Convert to string resources for localization
 fun UseCaseResult.Reason.toUiMessage(): String = when (this) {
-    UseCaseResult.Reason.Unauthorized -> "Unauthorized access"
-    UseCaseResult.Reason.NoInternet -> "No internet connection"
-    UseCaseResult.Reason.Timeout -> "Timeout"
-    is UseCaseResult.Reason.Unknown -> this.message
+    UseCaseResult.Reason.NoInternet -> "📡 No connection. Check your internet!"
+    UseCaseResult.Reason.Timeout -> "⏳ Taking too long. Try again!"
+    UseCaseResult.Reason.NotFound -> "🔍 Artist not found"
+    is UseCaseResult.Reason.Unknown -> "⚠️ Something went wrong"
 }
