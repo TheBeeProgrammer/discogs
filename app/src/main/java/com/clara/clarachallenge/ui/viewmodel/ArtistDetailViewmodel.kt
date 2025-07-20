@@ -48,9 +48,9 @@ class ArtistDetailViewModel @Inject constructor(
      *
      * @param artistId The ID of the artist to load.
      */
-    private fun loadArtist(artistId: Int) {
+    private fun loadArtist(artistId: String) {
         viewModelScope.launch {
-            when (val result = useCase(artistId)) {
+            when (val result = useCase(artistId.toInt())) {
                 is UseCaseResult.Success -> {
                     result.data.collect { artistDetail ->
                         updateState { ArtistDetailState.Success(artistDetail) }

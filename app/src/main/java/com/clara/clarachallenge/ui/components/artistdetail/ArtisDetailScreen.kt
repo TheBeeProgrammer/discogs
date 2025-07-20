@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.clara.clarachallenge.R
 import com.clara.clarachallenge.ui.components.utils.CachedImage
@@ -38,13 +39,13 @@ import com.clara.domain.model.ArtistMembers
  *
  * @param artistDetailState The current state of the artist detail data.
  * @param onRetry A callback function to be invoked when the user wants to retry fetching the data in case of an error.
- * @param viewAlbumsClick A callback function to be invoked when the user clicks on the "View Albums" button.
+ * @param viewReleasesClick A callback function to be invoked when the user clicks on the "View Releases" button.
  */
 @Composable
 fun ArtistDetailContent(
     artistDetailState: ArtistDetailState,
     onRetry: () -> Unit,
-    viewAlbumsClick: () -> Unit
+    viewReleasesClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -60,7 +61,7 @@ fun ArtistDetailContent(
 
             is ArtistDetailState.Success -> ArtistDetailsView(
                 artist = artistDetailState.artist,
-                onViewAlbumsClick = viewAlbumsClick
+                onViewReleasesClick = viewReleasesClick
             )
         }
     }
@@ -70,17 +71,17 @@ fun ArtistDetailContent(
  * Displays the detailed information of an artist.
  *
  * @param artist The [ArtistDetail] object containing the artist's information.
- * @param onViewAlbumsClick A lambda function to be invoked when the "View Albums" button is clicked.
+ * @param onViewReleasesClick A lambda function to be invoked when the "View Releases" button is clicked.
  */
 @Composable
 fun ArtistDetailsView(
     artist: ArtistDetail,
-    onViewAlbumsClick: () -> Unit
+    onViewReleasesClick: () -> Unit
 ) {
     Column {
         ArtistImage(imageUrl = artist.imageUrl, name = artist.name)
         ArtistName(name = artist.name)
-        ViewAlbumsButton(onClick = onViewAlbumsClick)
+        ViewReleasesButton(onClick = onViewReleasesClick)
         Divider()
         Column(
             modifier = Modifier
@@ -116,7 +117,10 @@ private fun ArtistImage(imageUrl: String?, name: String) {
         ) {
             CachedImage(
                 imageUrl = it,
-                contentDescription = "Image of $name",
+                contentDescription = stringResource(
+                    R.string.artist_image_content_description,
+                    android.R.attr.name
+                ),
                 modifier = Modifier
                     .size(180.dp)
                     .align(Alignment.Center)
@@ -143,12 +147,12 @@ private fun ArtistName(name: String) {
 }
 
 /**
- * Composable function that displays a button to view albums.
+ * Composable function that displays a button to view releases.
  *
  * @param onClick Callback function to be executed when the button is clicked.
  */
 @Composable
-private fun ViewAlbumsButton(onClick: () -> Unit) {
+private fun ViewReleasesButton(onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -160,12 +164,14 @@ private fun ViewAlbumsButton(onClick: () -> Unit) {
         Icon(
             modifier = Modifier.size(32.dp),
             painter = painterResource(id = R.drawable.ic_album),
-            contentDescription = "View Albums",
+            contentDescription = stringResource(
+                id = R.string.release_content_description
+            ),
             tint = MaterialTheme.colorScheme.primary
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = "View Albums",
+            text = stringResource(R.string.releases_label),
             style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.primary)
         )
     }
@@ -180,7 +186,7 @@ private fun ViewAlbumsButton(onClick: () -> Unit) {
 private fun ArtistProfile(profile: String) {
     Spacer(modifier = Modifier.height(16.dp))
     Text(
-        text = "Profile",
+        text = stringResource(R.string.artist_profile_title),
         style = MaterialTheme.typography.titleMedium
     )
     Spacer(modifier = Modifier.height(4.dp))
@@ -199,13 +205,15 @@ private fun ArtistProfile(profile: String) {
 private fun ArtistMembers(members: List<ArtistMembers>) {
     Spacer(modifier = Modifier.height(24.dp))
     Text(
-        text = "Members",
+        text = stringResource(R.string.artist_members_title),
         style = MaterialTheme.typography.titleMedium
     )
     Spacer(modifier = Modifier.height(8.dp))
     members.forEach { member ->
+        val status =
+            if (member.active) stringResource(R.string.artist_member_active) else stringResource(R.string.artist_member_inactive)
         Text(
-            text = "• ${member.name} (${if (member.active) "Active" else "Inactive"})",
+            text = "• ${member.name} $status",
             style = MaterialTheme.typography.bodyMedium,
             modifier = Modifier.padding(vertical = 2.dp)
         )

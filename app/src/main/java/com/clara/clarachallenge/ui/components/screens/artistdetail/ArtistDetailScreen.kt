@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.clara.clarachallenge.ui.common.Screen
 import com.clara.clarachallenge.ui.components.artistdetail.ArtistDetailContent
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailAction
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailEvent
@@ -17,7 +18,7 @@ import com.clara.clarachallenge.ui.viewmodel.ArtistDetailViewModel
 /**
  * Composable function that displays the artist detail screen.
  *
- * This screen shows detailed information about a specific artist, including their albums.
+ * This screen shows detailed information about a specific artist, including their releases.
  * It observes the state from [ArtistDetailViewModel] to update the UI and handles
  * events such as error messages.
  *
@@ -26,7 +27,7 @@ import com.clara.clarachallenge.ui.viewmodel.ArtistDetailViewModel
  */
 @Composable
 fun ArtistDetailScreen(
-    artistId: Int,
+    artistId: String,
     onBack: () -> Unit,
     navController: NavHostController
 ) {
@@ -52,8 +53,8 @@ fun ArtistDetailScreen(
         ArtistDetailContent(
             artistDetailState = state,
             onRetry = { viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId)) },
-            viewAlbumsClick = {
-                navController.navigate("albums/${artistId}")
+            viewReleasesClick = {
+                navController.navigate(Screen.Releases.createRoute(artistId))
             })
     }
 }
