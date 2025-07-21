@@ -10,6 +10,7 @@ import com.clara.domain.model.Artist
 import com.clara.domain.model.InternalServerErrorException
 import com.clara.domain.model.NetworkUnavailableException
 import com.clara.domain.model.UnknownErrorException
+import com.clara.logger.Logger
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -50,6 +51,7 @@ class ArtistPagingSource @Inject constructor(
                 }
             )
         } catch (e: HttpException) {
+            Logger.e(message = "HttpCode: ${e.code()} " + e.message.toString())
             when (e.code()) {
                 ApiConstants.INTERNAL_SERVER_ERROR -> LoadResult.Error(
                     InternalServerErrorException(
@@ -59,10 +61,12 @@ class ArtistPagingSource @Inject constructor(
 
                 else -> LoadResult.Error(UnknownErrorException(e.message ?: ""))
             }
-        } catch (_: IOException) {
+        } catch (e: IOException) {
+            Logger.e(message =  e.message.toString())
             LoadResult.Error(NetworkUnavailableException())
         } catch (e: Exception) {
-            LoadResult.Error(e)
+            Logger.e(message =  e.message.toString())
+            LoadResult.Error(UnknownErrorException(e.message ?: ""))
         }
     }
 

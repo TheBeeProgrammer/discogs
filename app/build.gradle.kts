@@ -41,6 +41,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs = listOf("-XXLanguage:+PropertyParamAnnotationDefaultTargetMode")
     }
     buildFeatures {
         compose = true
@@ -96,4 +97,6 @@ dependencies {
     implementation(project(":domain"))
     //  Data Layer
     implementation(project(":data"))
+    // Logger
+    implementation(project(":logger"))
 }

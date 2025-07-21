@@ -85,6 +85,8 @@ dependencies {
     testImplementation(libs.truth)
 
 
-    //  Domain Layer
+    // Domain Layer
     implementation(project(":domain"))
+    // Logger
+    implementation(project(":logger"))
 }

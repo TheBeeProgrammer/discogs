@@ -1,6 +1,7 @@
 package com.clara.clarachallenge.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.clara.clarachallenge.ui.common.TextResourceProvider
 import com.clara.clarachallenge.ui.common.toUiMessage
 import com.clara.clarachallenge.ui.state.ArtistDetailAction
 import com.clara.clarachallenge.ui.state.ArtistDetailEvent
@@ -26,6 +27,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ArtistDetailViewModel @Inject constructor(
+    private val textResourceProvider: TextResourceProvider,
     private val useCase: @JvmSuppressWildcards ExecutableUseCase<Int, UseCaseResult<Flow<ArtistDetail>>>
 ) : BaseViewModel<ArtistDetailAction, ArtistDetailState, ArtistDetailEvent>(
     defaultState = ArtistDetailState.Loading
@@ -61,8 +63,20 @@ class ArtistDetailViewModel @Inject constructor(
                 }
 
                 is UseCaseResult.Failure -> {
-                    updateState { ArtistDetailState.Error(result.reason.toUiMessage()) }
-                    sendEvent(ArtistDetailEvent.ShowError(result.reason.toUiMessage()))
+                    updateState {
+                        ArtistDetailState.Error(
+                            result.reason.toUiMessage(
+                                textResourceProvider
+                            )
+                        )
+                    }
+                    sendEvent(
+                        ArtistDetailEvent.ShowError(
+                            result.reason.toUiMessage(
+                                textResourceProvider
+                            )
+                        )
+                    )
                 }
             }
         }

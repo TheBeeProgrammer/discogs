@@ -1,6 +1,8 @@
 package com.clara.data.api.interceptor
 
 import android.util.Log
+import com.clara.data.BuildConfig
+import com.clara.logger.Logger
 import okhttp3.logging.HttpLoggingInterceptor
 import javax.inject.Inject
 
@@ -14,6 +16,6 @@ import javax.inject.Inject
  */
 class LoggingInterceptor @Inject constructor() : HttpLoggingInterceptor.Logger {
     override fun log(message: String) {
-        Log.i(LoggingInterceptor::class.java.canonicalName, message)
+        Logger.i(message = message)
     }
 }

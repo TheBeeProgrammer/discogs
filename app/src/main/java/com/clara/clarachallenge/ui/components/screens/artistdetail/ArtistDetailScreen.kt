@@ -1,11 +1,9 @@
 package com.clara.clarachallenge.ui.components.screens.artistdetail
 
-import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.clara.clarachallenge.ui.common.Screen
@@ -14,6 +12,7 @@ import com.clara.clarachallenge.ui.state.ArtistDetailAction
 import com.clara.clarachallenge.ui.state.ArtistDetailEvent
 import com.clara.clarachallenge.ui.theme.ClarachallengeTheme
 import com.clara.clarachallenge.ui.viewmodel.ArtistDetailViewModel
+import com.clara.logger.Logger
 
 /**
  * Composable function that displays the artist detail screen.
@@ -34,7 +33,6 @@ fun ArtistDetailScreen(
     ClarachallengeTheme {
         val viewModel: ArtistDetailViewModel = hiltViewModel()
         val state by viewModel.state.collectAsState()
-        val context = LocalContext.current
 
         LaunchedEffect(Unit) {
             viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId))
@@ -44,7 +42,9 @@ fun ArtistDetailScreen(
             viewModel.events.collect { event ->
                 when (event) {
                     is ArtistDetailEvent.ShowError -> {
-                        Toast.makeText(context, event.message, Toast.LENGTH_LONG).show()
+                        /** Since the error is already displayed on screen, we simulate sending
+                        it to the logger.*/
+                        Logger.e(message = "Error loading artist detail: ${event.message}")
                     }
                 }
             }
