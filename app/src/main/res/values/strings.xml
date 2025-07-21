@@ -25,8 +25,9 @@
 
     <!-- Paging Errors -->
     <string name="error_no_internet">No internet connection. Please try again.</string>
-    <string name="error_unauthorized">You are not authorized. Please login again.</string>
-    <string name="error_forbidden">Access denied. You don\'t have permission to view this.</string>
+    <string name="error_timeout">Taking too long. Try again</string>
+    <string name="error_not_found">Artist not found</string>
+    <string name="error_unknown">Something went wrong</string>
 
     <!-- Releases -->
     <string name="release_content_description">Release Icon</string>
