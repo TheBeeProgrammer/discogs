@@ -39,6 +39,8 @@ This project follows the [official Android Architecture guidelines](https://deve
 - A shared base class is used across ViewModels and UseCases. This architecture ensures a strict separation of concerns and testability.
 - **Repository Pattern** provides abstraction between data sources and domain logic.
 - **Paging 3** handles paginated responses from the API.
+![Architecture](https://drive.google.com/file/d/1fZQk7HHkLyzCuOeWqe3Xe4qXrp_-J0pp/view?usp=sharing)
+
 
 ## 🧪 Testing
 
@@ -94,7 +96,7 @@ To run analysis locally:
     DISCOGS_TOKEN=your_discogs_token
 	```
 > 	You can find more information about the Discogs API and how to get
-> your token [here](https://www.discogs.com/settings/developers).
+>  your token [here](https://www.discogs.com/settings/developers).
 ## 🧑‍💻 Development Process
 
 I approached this challenge iteratively, in the following steps:
