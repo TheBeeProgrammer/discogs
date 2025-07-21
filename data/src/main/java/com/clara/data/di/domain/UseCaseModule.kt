@@ -1,15 +1,19 @@
 package com.clara.data.di.domain
 
-import com.clara.domain.repositories.ArtistDetailRepository
-import com.clara.domain.repositories.ArtistReleasesRepository
-import com.clara.domain.repositories.SearchArtistRepository
+import androidx.paging.PagingData
+import com.clara.domain.model.Artist
+import com.clara.domain.model.ArtistDetail
+import com.clara.domain.model.Releases
 import com.clara.domain.usecase.artist.ArtistDetailUseCase
 import com.clara.domain.usecase.artist.ArtistReleasesUseCase
 import com.clara.domain.usecase.artist.SearchArtistUseCase
+import com.clara.domain.usecase.base.ExecutableUseCase
+import com.clara.domain.usecase.base.UseCaseResult
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.flow.Flow
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -17,18 +21,17 @@ object UseCaseModule {
 
     @Provides
     fun provideSearchArtistUseCase(
-        repository: SearchArtistRepository
-    ): SearchArtistUseCase {
-        return SearchArtistUseCase(repository)
-    }
+        impl: SearchArtistUseCase
+    ): ExecutableUseCase<String, Flow<PagingData<Artist>>> = impl
 
     @Provides
-    fun providesArtistDetailUseCase(repository: ArtistDetailRepository): ArtistDetailUseCase {
-        return ArtistDetailUseCase(repository)
-    }
+    fun provideArtistDetailUseCase(
+        impl: ArtistDetailUseCase
+    ): ExecutableUseCase<Int, UseCaseResult<Flow<ArtistDetail>>> = impl
 
     @Provides
-    fun provideArtistReleaseUseCase(repository: ArtistReleasesRepository): ArtistReleasesUseCase {
-        return ArtistReleasesUseCase(repository)
-    }
+    fun provideArtisReleasesUseCase(
+        impl: ArtistReleasesUseCase
+    ): ExecutableUseCase<Int, Flow<PagingData<Releases>>> = impl
+
 }

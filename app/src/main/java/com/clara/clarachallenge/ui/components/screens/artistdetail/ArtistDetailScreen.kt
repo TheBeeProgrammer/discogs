@@ -19,7 +19,7 @@ import com.clara.clarachallenge.ui.viewmodel.ArtistDetailViewModel
  * Composable function that displays the artist detail screen.
  *
  * This screen shows detailed information about a specific artist, including their releases.
- * It observes the state from [ArtistDetailViewModel] to update the UI and handles
+ * It observes the state from [ArtistDetailViewmodel] to update the UI and handles
  * events such as error messages.
  *
  * @param artistId The ID of the artist to display details for.

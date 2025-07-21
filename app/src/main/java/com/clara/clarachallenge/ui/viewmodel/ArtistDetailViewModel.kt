@@ -6,9 +6,12 @@ import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailAction
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailEvent
 import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
+import com.clara.domain.model.ArtistDetail
 import com.clara.domain.usecase.artist.ArtistDetailUseCase
+import com.clara.domain.usecase.base.ExecutableUseCase
 import com.clara.domain.usecase.base.UseCaseResult
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,7 +26,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class ArtistDetailViewModel @Inject constructor(
-    private val useCase: ArtistDetailUseCase
+    private val useCase: @JvmSuppressWildcards ExecutableUseCase<Int, UseCaseResult<Flow<ArtistDetail>>>
 ) : BaseViewModel<ArtistDetailAction, ArtistDetailState, ArtistDetailEvent>(
     defaultState = ArtistDetailState.Loading
 ) {

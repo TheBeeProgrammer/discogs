@@ -9,7 +9,7 @@ import com.clara.clarachallenge.ui.model.search.SearchState
 import com.clara.clarachallenge.ui.viewmodel.SearchArtistViewModel.Companion.DEBOUNCE_PERIOD
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Artist
-import com.clara.domain.usecase.artist.SearchArtistUseCase
+import com.clara.domain.usecase.base.ExecutableUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -23,10 +23,20 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import javax.inject.Inject
 
+/**
+ * [SearchArtistViewModel] is responsible for managing the state and logic for searching artists.
+ * It consumes [SearchArtistAction]s and updates the UI state via [SearchState] and [SearchArtistEvent].
+ *
+ * This ViewModel observes changes in the search query and reacts by providing a debounced, distinct,
+ * and cancellable flow of [PagingData] for [Artist]s, fetched via the provided use case.
+ *
+ * @property searchArtistsUseCase A use case that returns a [Flow] of paginated artist data
+ * based on a search query string.
+ */
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 @HiltViewModel
 class SearchArtistViewModel @Inject constructor(
-    private val searchArtistsUseCase: SearchArtistUseCase
+    private val searchArtistsUseCase: @JvmSuppressWildcards ExecutableUseCase<String, Flow<PagingData<Artist>>>
 ) : BaseViewModel<SearchArtistAction, SearchState, SearchArtistEvent>(
     defaultState = SearchState.Idle
 ) {
