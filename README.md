@@ -32,9 +32,8 @@ This project is an Android app built using Jetpack Compose and MVI architecture.
 
 
 ## 🧠 Architecture
-
+![App Architecture](images/app-architecture.png)
 This project follows the [official Android Architecture guidelines](https://developer.android.com/topic/architecture) with a modular and layered setup:
-[REPLACE HERE WITH THE ARCH IMAGE]
 - **MVI (Model-View-Intent)** was used instead of MVVM due to multiple UI states (Idle, Loading, Success, Empty, Error).
 - A shared base class is used across ViewModels and UseCases. This architecture ensures a strict separation of concerns and testability.
 - **Repository Pattern** provides abstraction between data sources and domain logic.
@@ -67,6 +66,7 @@ To run the unit tests:
 ```bash
 ./gradlew testDebugUnitTest
 ```
+
 ## 📜 Logging
 
 Logging is handled through a custom `:logger` module, which wraps [Timber](https://github.com/JakeWharton/timber). Logging is only enabled in **debug** builds to keep release builds clean.
