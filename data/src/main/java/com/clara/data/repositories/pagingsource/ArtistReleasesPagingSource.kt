@@ -59,7 +59,7 @@ class ArtistReleasesPagingSource @Inject constructor(
         } catch (_: IOException) {
             LoadResult.Error(NetworkUnavailableException())
         } catch (e: Exception) {
-            LoadResult.Error(e)
+            LoadResult.Error(UnknownErrorException(e.message.toString()))
         }
     }
 
