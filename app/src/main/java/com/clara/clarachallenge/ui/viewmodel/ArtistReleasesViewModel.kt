@@ -8,7 +8,7 @@ import com.clara.clarachallenge.ui.model.release.ReleaseListEvent
 import com.clara.clarachallenge.ui.model.release.ReleaseListState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Releases
-import com.clara.domain.usecase.artist.ArtistReleasesUseCase
+import com.clara.domain.usecase.base.ExecutableUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,23 +16,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 /**
- * ViewModel responsible for managing the state and logic for displaying an artist's releases.
+ * [ArtistReleasesViewModel] is responsible for managing and exposing the paginated list of
+ * releases for a given artist. It reacts to [ReleaseListAction]s and updates the UI state
+ * through [ReleaseListState] and [ReleaseListEvent].
  *
- * This ViewModel handles loading releases for a specific artist using the [ArtistReleasesUseCase].
- * It exposes a [StateFlow] of [PagingData] for releases ([pagedReleases]) to be observed by the UI.
- * The UI state, managed by the [BaseViewModel], transitions through [ReleaseListState.Loading],
- * [ReleaseListState.Success], or [ReleaseListState.Error] based on the data loading process.
- *
- * It processes [ReleaseListAction] to trigger actions like loading releases.
- * One-time UI events can be communicated via [ReleaseListEvent], though this is not
- * actively used in the current implementation.
- *
- * @param artistReleasesUseCase The use case responsible for fetching artist releases.
+ * @param artistReleasesUseCase Use case that fetches a [Flow] of [PagingData] for a given artist ID.
  */
 @HiltViewModel
 class ArtistReleasesViewModel @Inject constructor(
-    private val artistReleasesUseCase: @JvmSuppressWildcards ExecutableUseCase<Int, UseCaseResult<Flow<PagingData<Album>>>>
+    private val artistReleasesUseCase: @JvmSuppressWildcards ExecutableUseCase<Int, Flow<PagingData<Releases>>>
 ) : BaseViewModel<ReleaseListAction, ReleaseListState, ReleaseListEvent>(ReleaseListState.Idle) {
 
     private val _pagedReleases = MutableStateFlow<PagingData<Releases>>(PagingData.empty())
@@ -65,7 +59,7 @@ class ArtistReleasesViewModel @Inject constructor(
     private fun loadReleases(artistId: Int) {
         viewModelScope.launch {
             artistReleasesUseCase(artistId)
-                .cachedIn(viewModelScope)
+               // .cachedIn(viewModelScope)
                 .collect { pagingData ->
                     _pagedReleases.value = pagingData
                 }

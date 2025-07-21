@@ -108,7 +108,7 @@ class SearchArtistViewModelTest {
         viewModel.onSearchQueryChange("same")
         testDispatcher.scheduler.advanceTimeBy(DEBOUNCE_TIME)
 
-        viewModel.onSearchQueryChange("same") // Same query
+        viewModel.onSearchQueryChange("same")
         testDispatcher.scheduler.advanceTimeBy(DEBOUNCE_TIME)
         testDispatcher.scheduler.advanceUntilIdle()
 

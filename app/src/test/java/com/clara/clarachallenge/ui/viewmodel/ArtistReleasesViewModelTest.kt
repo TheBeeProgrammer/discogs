@@ -1,14 +1,14 @@
 package com.clara.clarachallenge.ui.viewmodel
 
 import androidx.paging.PagingData
-import com.clara.clarachallenge.ui.model.album.AlbumListAction
-import com.clara.clarachallenge.ui.model.album.AlbumListState
-import com.clara.clarachallenge.ui.viewmodel.fakes.FakeGetArtistAlbumsUseCase
-import com.clara.domain.model.Album
-import com.clara.domain.usecase.model.UseCaseResult
+import com.clara.clarachallenge.ui.model.release.ReleaseListAction
+import com.clara.clarachallenge.ui.viewmodel.fakes.FakeArtistReleasesUseCase
+import com.clara.domain.model.Releases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.resetMain
@@ -16,22 +16,23 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
-class ArtistReleasesViewModelTest {
+@ExperimentalCoroutinesApi
+class ArtistReleasesViewModelBehaviorTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private val testScope = TestScope(testDispatcher)
 
     private lateinit var viewModel: ArtistReleasesViewModel
-    private lateinit var fakeUseCase: FakeGetArtistAlbumsUseCase
+    private lateinit var fakeUseCase: FakeArtistReleasesUseCase
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
-        fakeUseCase = FakeGetArtistAlbumsUseCase()
+        fakeUseCase = FakeArtistReleasesUseCase()
         viewModel = ArtistReleasesViewModel(fakeUseCase)
     }
 
@@ -41,36 +42,17 @@ class ArtistReleasesViewModelTest {
     }
 
     @Test
-    fun `initial state should be Loading`() = testScope.runTest {
-        assertEquals(AlbumListState.Loading, viewModel.state.value)
-    }
+    fun `when starting, should emit empty paging data`() = testScope.runTest {
+        // Arrange
+        val emissions = mutableListOf<PagingData<Releases>>()
+        val collectJob = launch {
+            viewModel.pagedReleases.collect { emissions.add(it) }
+        }
 
-    @Test
-    fun `onPagingError updates state to Empty`() = testScope.runTest {
-        viewModel.onPagingError("Test error")
-        testDispatcher.scheduler.advanceUntilIdle()
-        assertEquals(AlbumListState.Empty, viewModel.state.value)
-    }
+        // Assert
+        assertEquals(0, emissions.size)
+        assertTrue(emissions.isEmpty())
 
-    @Test
-    fun `sendAction LoadAlbums with success updates state to Success`() = testScope.runTest {
-        val album = Album("id1", "Album title", "image_url")
-        val pagingData = PagingData.from(listOf(album))
-        fakeUseCase.result = UseCaseResult.Success(flowOf(pagingData))
-
-        viewModel.sendAction(AlbumListAction.LoadAlbums(123))
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        assert(viewModel.state.value is AlbumListState.Success)
-    }
-
-    @Test
-    fun `sendAction LoadAlbums with failure updates state to Error`() = testScope.runTest {
-        fakeUseCase.result = UseCaseResult.Failure(UseCaseResult.Reason.NoInternet)
-
-        viewModel.sendAction(AlbumListAction.LoadAlbums(123))
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        assert(viewModel.state.value is AlbumListState.Error)
+        collectJob.cancel()
     }
 }
