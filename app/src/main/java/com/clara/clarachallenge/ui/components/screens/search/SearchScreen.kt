@@ -10,9 +10,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.clara.clarachallenge.ui.common.Screen
-import com.clara.clarachallenge.ui.components.search.ArtistSearchContent
-import com.clara.clarachallenge.ui.model.search.SearchArtistAction
-import com.clara.clarachallenge.ui.model.search.SearchArtistEvent
+import com.clara.clarachallenge.ui.components.artist.ArtistSearchContent
+import com.clara.clarachallenge.ui.state.SearchArtistAction
+import com.clara.clarachallenge.ui.state.SearchArtistEvent
 import com.clara.clarachallenge.ui.viewmodel.SearchArtistViewModel
 
 @Composable

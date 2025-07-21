@@ -9,9 +9,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.clara.clarachallenge.ui.common.Screen
-import com.clara.clarachallenge.ui.components.artistdetail.ArtistDetailContent
-import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailAction
-import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailEvent
+import com.clara.clarachallenge.ui.components.artist.ArtistDetailContent
+import com.clara.clarachallenge.ui.state.ArtistDetailAction
+import com.clara.clarachallenge.ui.state.ArtistDetailEvent
 import com.clara.clarachallenge.ui.theme.ClarachallengeTheme
 import com.clara.clarachallenge.ui.viewmodel.ArtistDetailViewModel
 

@@ -1,4 +1,4 @@
-package com.clara.clarachallenge.ui.components.utils
+package com.clara.clarachallenge.ui.components.shared
 
 import androidx.compose.foundation.clickable
 import androidx.compose.runtime.getValue

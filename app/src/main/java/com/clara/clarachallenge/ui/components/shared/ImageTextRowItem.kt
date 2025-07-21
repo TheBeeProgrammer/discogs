@@ -1,4 +1,4 @@
-package com.clara.clarachallenge.ui.components.utils
+package com.clara.clarachallenge.ui.components.shared
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
