@@ -21,7 +21,7 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class ArtistReleasesViewModelBehaviorTest {
+class ArtistReleasesViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
     private val testScope = TestScope(testDispatcher)
