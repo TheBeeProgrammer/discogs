@@ -64,7 +64,6 @@ fun ErrorView(
 private fun mapErrorToMessage(throwable: Throwable): String {
     return when (throwable) {
         is NetworkUnavailableException -> stringResource(R.string.error_no_internet)
-        is InternalServerErrorException -> stringResource(R.string.error_unauthorized)
         else -> stringResource(R.string.unknown_error)
     }
 }

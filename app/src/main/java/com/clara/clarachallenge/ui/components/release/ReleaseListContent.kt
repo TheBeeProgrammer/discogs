@@ -20,6 +20,12 @@ import com.clara.clarachallenge.ui.components.shared.ErrorView
 import com.clara.clarachallenge.ui.components.shared.LinearLoadingView
 import com.clara.domain.model.Releases
 
+/**
+ * Displays a list of releases with pagination and loading/error states.
+ *
+ * @param releases The [LazyPagingItems] containing the releases to display.
+ * @param onRetry Callback invoked when the user requests to retry loading data after an error.
+ */
 @Composable
 fun ReleaseListContent(
     releases: LazyPagingItems<Releases>,
@@ -65,6 +71,41 @@ fun ReleaseListContent(
     }
 }
 
+
+/**
+ * Composable function that displays a view indicating that there are no releases to show.
+ * It shows a centered text message.
+ */
+@Composable
+private fun EmptyView() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(R.string.empty_releases_message),
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+/**
+ * Handles the load state for release paging.
+ *
+ * This function is an extension of [LazyListScope] and is responsible for displaying a loading
+ * indicator or an error message based on the current load state of the `releases` [LazyPagingItems].
+ *
+ * - If the `append` load state is [LoadState.Loading], a [LinearLoadingView] is displayed as an item.
+ * - If the `append` load state is [LoadState.Error], an [ErrorView] is displayed as an item,
+ *   allowing the user to retry the operation via the [onRetry] callback.
+ * - For any other load state, nothing is displayed.
+ *
+ * @param releases The [LazyPagingItems] representing the paginated list of releases.
+ * @param onRetry A lambda function to be invoked when the user wishes to retry loading more releases
+ *                after an error.
+ */
 private fun LazyListScope.handleReleasePagingLoadState(
     releases: LazyPagingItems<Releases>,
     onRetry: () -> Unit,
@@ -78,20 +119,5 @@ private fun LazyListScope.handleReleasePagingLoadState(
         }
 
         else -> {}
-    }
-}
-
-@Composable
-fun EmptyView() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(32.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = stringResource(R.string.empty_releases_message),
-            style = MaterialTheme.typography.bodyMedium
-        )
     }
 }
