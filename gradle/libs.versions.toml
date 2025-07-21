@@ -26,6 +26,7 @@ retrofit = "3.0.0"
 material = "1.10.0"
 activity = "1.8.0"
 pagingCommonAndroid = "3.3.6"
+timber = "5.0.1"
 truth = "1.4.4"
 turbine = "1.2.1"
 
@@ -64,6 +65,7 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-paging-common-android = { group = "androidx.paging", name = "paging-common-android", version.ref = "pagingCommonAndroid" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 
