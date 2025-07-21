@@ -1,10 +1,12 @@
 package com.clara.clarachallenge.ui.viewmodel
 
+import com.clara.clarachallenge.R
 import com.clara.clarachallenge.ui.common.toUiMessage
 import com.clara.clarachallenge.ui.state.ArtistDetailAction
 import com.clara.clarachallenge.ui.state.ArtistDetailEvent
 import com.clara.clarachallenge.ui.state.ArtistDetailState
 import com.clara.clarachallenge.ui.viewmodel.fakes.FakeArtistDetailUseCase
+import com.clara.clarachallenge.ui.viewmodel.fakes.FakeTextResourceProvider
 import com.clara.domain.model.ArtistDetail
 import com.clara.domain.usecase.base.UseCaseResult
 import junit.framework.TestCase.assertEquals
@@ -31,12 +33,21 @@ class ArtistDetailViewModelTest {
 
     private lateinit var viewModel: ArtistDetailViewModel
     private lateinit var fakeUseCase: FakeArtistDetailUseCase
+    private lateinit var fakeTextResourceProvider: FakeTextResourceProvider
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         fakeUseCase = FakeArtistDetailUseCase()
-        viewModel = ArtistDetailViewModel(fakeUseCase)
+        fakeTextResourceProvider = FakeTextResourceProvider().apply {
+            resources = listOf(
+                R.string.error_no_internet to "No internet connection. Please try again",
+                R.string.error_timeout to "Taking too long. Try again",
+                R.string.error_not_found to "Artist not found",
+                R.string.error_unknown to "Something went wrong"
+            )
+        }
+        viewModel = ArtistDetailViewModel(fakeTextResourceProvider, fakeUseCase)
     }
 
     @After
@@ -99,7 +110,15 @@ class ArtistDetailViewModelTest {
         // Assert
         val state = viewModel.state.value
         assertTrue(state is ArtistDetailState.Error)
-        assertTrue(events.contains(ArtistDetailEvent.ShowError(reason.reason.toUiMessage())))
+        assertTrue(
+            events.contains(
+                ArtistDetailEvent.ShowError(
+                    reason.reason.toUiMessage(
+                        fakeTextResourceProvider
+                    )
+                )
+            )
+        )
 
         job.cancel()
     }
