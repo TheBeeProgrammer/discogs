@@ -15,18 +15,12 @@ import timber.log.Timber
  * ```
  */
 object Logger {
-    var isDebug = false
-    private val logger: Logging by lazy {
-        if (isDebug) {
-            Timber.plant(TimberLogging())
-            TimberLogging()
-        } else {
-            NoOpLogger()
-        }
+    private val logger by lazy {
+        TimberLogging()
     }
 
     fun init() {
-        // Intentionally left blank – lazy block handles setup
+        Timber.plant(logger)
     }
 
     fun d(message: String, t: Throwable? = null) = logger.d(t, message)

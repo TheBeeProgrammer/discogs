@@ -2,6 +2,7 @@ package com.clara.clarachallenge.ui.components.release
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,6 +19,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.clara.clarachallenge.R
 import com.clara.clarachallenge.ui.components.shared.ErrorView
 import com.clara.clarachallenge.ui.components.shared.LinearLoadingView
+import com.clara.domain.model.NotFoundException
 import com.clara.domain.model.Releases
 
 /**
@@ -41,36 +43,70 @@ fun ReleaseListContent(
 
         val refreshState = releases.loadState.refresh
         when (refreshState) {
-            is LoadState.Error -> ErrorView(
-                throwable = refreshState.error,
-                onRetry = onRetry
-            )
-
+            is LoadState.Error -> HandleError(refreshState, onRetry)
             is LoadState.Loading -> LinearLoadingView()
-            else -> if (releases.itemCount == 0) {
-                EmptyView()
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 16.dp)
-                ) {
-                    items(releases.itemCount) { index ->
-                        releases[index]?.let { album ->
-                            ReleaseListItem(releases = album)
-                        }
-                    }
-
-                    handleReleasePagingLoadState(
-                        releases = releases,
-                        onRetry = onRetry,
-                    )
-                }
-            }
+            else -> HandleSuccessLoading(releases, onRetry)
         }
     }
 }
 
+/**
+ * Composable function responsible for displaying the list of releases when the initial loading
+ * has successfully completed and there are items to show.
+ *
+ * It uses a [LazyColumn] to efficiently display the list of [releases].
+ * Each item in the list is represented by a [ReleaseListItem].
+ * It also incorporates [handleReleasePagingLoadState] at the end of the list to manage
+ * the loading state for subsequent pages (append).
+ *
+ * @param releases The [LazyPagingItems] containing the successfully loaded releases.
+ * @param onRetry Callback invoked when the user requests to retry loading more data
+ *                (e.g., if loading the next page fails).
+ */
+@Composable
+private fun ColumnScope.HandleSuccessLoading(
+    releases: LazyPagingItems<Releases>,
+    onRetry: () -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .weight(1f)
+            .padding(horizontal = 16.dp)
+    ) {
+        items(releases.itemCount) { index ->
+            releases[index]?.let { album ->
+                ReleaseListItem(releases = album)
+            }
+        }
+
+        handleReleasePagingLoadState(
+            releases = releases,
+            onRetry = onRetry,
+        )
+    }
+}
+
+/**
+ * Displays an appropriate error view based on the type of error encountered during data refresh.
+ *
+ * If the error is a [NotFoundException], it means no data was found, and an [EmptyView] is shown.
+ * For any other type of error, a generic [ErrorView] is displayed, providing a way to retry the
+ * operation via the [onRetry] callback.
+ *
+ * @param refreshState The [LoadState.Error] representing the error state of the data refresh.
+ * @param onRetry A lambda function to be invoked when the user wishes to retry the data loading
+ *                operation.
+ */
+@Composable
+private fun HandleError(refreshState: LoadState.Error, onRetry: () -> Unit) {
+    if (refreshState.error is NotFoundException) {
+        EmptyView()
+    } else {
+        ErrorView(throwable = refreshState.error) {
+            onRetry()
+        }
+    }
+}
 
 /**
  * Composable function that displays a view indicating that there are no releases to show.
