@@ -1,4 +1,4 @@
-package com.clara.clarachallenge.ui.model.release
+package com.clara.clarachallenge.ui.state
 
 import com.clara.clarachallenge.ui.viewmodel.base.ViewAction
 import com.clara.clarachallenge.ui.viewmodel.base.ViewEvent

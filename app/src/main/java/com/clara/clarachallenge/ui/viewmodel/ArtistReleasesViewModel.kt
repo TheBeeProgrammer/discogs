@@ -2,10 +2,9 @@ package com.clara.clarachallenge.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import com.clara.clarachallenge.ui.model.release.ReleaseListAction
-import com.clara.clarachallenge.ui.model.release.ReleaseListEvent
-import com.clara.clarachallenge.ui.model.release.ReleaseListState
+import com.clara.clarachallenge.ui.state.ReleaseListAction
+import com.clara.clarachallenge.ui.state.ReleaseListEvent
+import com.clara.clarachallenge.ui.state.ReleaseListState
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Releases
 import com.clara.domain.usecase.base.ExecutableUseCase

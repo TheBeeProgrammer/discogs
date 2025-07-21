@@ -1,9 +1,9 @@
 package com.clara.clarachallenge.ui.viewmodel
 
 import com.clara.clarachallenge.ui.common.toUiMessage
-import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailAction
-import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailEvent
-import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailState
+import com.clara.clarachallenge.ui.state.ArtistDetailAction
+import com.clara.clarachallenge.ui.state.ArtistDetailEvent
+import com.clara.clarachallenge.ui.state.ArtistDetailState
 import com.clara.clarachallenge.ui.viewmodel.fakes.FakeArtistDetailUseCase
 import com.clara.domain.model.ArtistDetail
 import com.clara.domain.usecase.base.UseCaseResult

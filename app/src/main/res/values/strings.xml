@@ -4,6 +4,7 @@
 
     <!-- Defaults -->
     <string name="unknown_error">Something went wrong please retry in a moment.</string>
+    <string name="retry">Retry</string>
 
     <!-- Search -->
     <string name="search_artist_hint">Search Artist</string>

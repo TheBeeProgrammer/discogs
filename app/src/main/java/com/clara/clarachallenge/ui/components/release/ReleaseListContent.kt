@@ -16,9 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.clara.clarachallenge.R
-import com.clara.clarachallenge.ui.components.utils.ErrorView
-import com.clara.clarachallenge.ui.components.utils.LinearLoadingView
-import com.clara.clarachallenge.ui.components.utils.mapErrorToMessage
+import com.clara.clarachallenge.ui.components.shared.ErrorView
+import com.clara.clarachallenge.ui.components.shared.LinearLoadingView
 import com.clara.domain.model.Releases
 
 @Composable
@@ -37,7 +36,7 @@ fun ReleaseListContent(
         val refreshState = releases.loadState.refresh
         when (refreshState) {
             is LoadState.Error -> ErrorView(
-                message = mapErrorToMessage(refreshState.error),
+                throwable = refreshState.error,
                 onRetry = onRetry
             )
 

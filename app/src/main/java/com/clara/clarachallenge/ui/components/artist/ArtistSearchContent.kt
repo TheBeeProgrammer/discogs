@@ -1,4 +1,4 @@
-package com.clara.clarachallenge.ui.components.search
+package com.clara.clarachallenge.ui.components.artist
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,10 +23,9 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.clara.clarachallenge.R
-import com.clara.clarachallenge.ui.components.utils.ErrorView
-import com.clara.clarachallenge.ui.components.utils.LinearLoadingView
-import com.clara.clarachallenge.ui.components.utils.mapErrorToMessage
-import com.clara.clarachallenge.ui.model.search.SearchState
+import com.clara.clarachallenge.ui.components.shared.ErrorView
+import com.clara.clarachallenge.ui.components.shared.LinearLoadingView
+import com.clara.clarachallenge.ui.state.SearchState
 import com.clara.domain.model.Artist
 
 /**
@@ -106,7 +105,7 @@ private fun ArtistListContent(
     val refreshState = artists.loadState.refresh
     when (refreshState) {
         is LoadState.Error -> ErrorView(
-            message = mapErrorToMessage(refreshState.error),
+            throwable = refreshState.error,
             onRetry = onRetry
         )
 
@@ -151,6 +150,7 @@ private fun LazyListScope.handlePagingLoadState(
                 onRetry = onRetry
             )
         }
+
         else -> {}
     }
 }

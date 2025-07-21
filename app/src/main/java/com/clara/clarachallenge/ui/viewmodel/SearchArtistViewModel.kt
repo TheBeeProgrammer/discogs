@@ -3,9 +3,9 @@ package com.clara.clarachallenge.ui.viewmodel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.clara.clarachallenge.ui.model.search.SearchArtistAction
-import com.clara.clarachallenge.ui.model.search.SearchArtistEvent
-import com.clara.clarachallenge.ui.model.search.SearchState
+import com.clara.clarachallenge.ui.state.SearchArtistAction
+import com.clara.clarachallenge.ui.state.SearchArtistEvent
+import com.clara.clarachallenge.ui.state.SearchState
 import com.clara.clarachallenge.ui.viewmodel.SearchArtistViewModel.Companion.DEBOUNCE_PERIOD
 import com.clara.clarachallenge.ui.viewmodel.base.BaseViewModel
 import com.clara.domain.model.Artist

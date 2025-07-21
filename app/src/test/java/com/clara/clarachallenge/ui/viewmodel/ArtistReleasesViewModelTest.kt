@@ -1,13 +1,10 @@
 package com.clara.clarachallenge.ui.viewmodel
 
 import androidx.paging.PagingData
-import com.clara.clarachallenge.ui.model.release.ReleaseListAction
 import com.clara.clarachallenge.ui.viewmodel.fakes.FakeArtistReleasesUseCase
 import com.clara.domain.model.Releases
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope

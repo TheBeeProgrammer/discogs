@@ -1,4 +1,4 @@
-package com.clara.clarachallenge.ui.components.artistdetail
+package com.clara.clarachallenge.ui.components.artist
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +23,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.clara.clarachallenge.R
-import com.clara.clarachallenge.ui.components.utils.CachedImage
-import com.clara.clarachallenge.ui.components.utils.CircularLoadingView
-import com.clara.clarachallenge.ui.components.utils.Divider
-import com.clara.clarachallenge.ui.components.utils.ErrorView
-import com.clara.clarachallenge.ui.components.utils.debouncedClickable
-import com.clara.clarachallenge.ui.model.artistdetail.ArtistDetailState
+import com.clara.clarachallenge.ui.components.shared.CachedImage
+import com.clara.clarachallenge.ui.components.shared.CircularLoadingView
+import com.clara.clarachallenge.ui.components.shared.Divider
+import com.clara.clarachallenge.ui.components.shared.ErrorView
+import com.clara.clarachallenge.ui.components.shared.debouncedClickable
+import com.clara.clarachallenge.ui.state.ArtistDetailState
 import com.clara.domain.model.ArtistDetail
 import com.clara.domain.model.ArtistMembers
 

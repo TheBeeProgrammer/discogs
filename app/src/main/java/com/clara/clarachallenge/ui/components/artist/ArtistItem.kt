@@ -1,7 +1,7 @@
-package com.clara.clarachallenge.ui.components.search
+package com.clara.clarachallenge.ui.components.artist
 
 import androidx.compose.runtime.Composable
-import com.clara.clarachallenge.ui.components.utils.ImageTextRowItem
+import com.clara.clarachallenge.ui.components.shared.ImageTextRowItem
 import com.clara.domain.model.Artist
 
 /**
