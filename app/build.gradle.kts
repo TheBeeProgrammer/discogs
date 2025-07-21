@@ -97,4 +97,6 @@ dependencies {
     implementation(project(":domain"))
     //  Data Layer
     implementation(project(":data"))
+    // Logger
+    implementation(project(":logger"))
 }
