@@ -76,6 +76,15 @@ dependencies {
     // Paging
     implementation(libs.androidx.paging.common.android)
 
+    // Testing
+    testImplementation(libs.androidx.paging.common)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.truth)
+
+
     //  Domain Layer
     implementation(project(":domain"))
 }
