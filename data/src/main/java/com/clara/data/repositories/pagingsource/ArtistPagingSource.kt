@@ -9,10 +9,14 @@ import com.clara.data.mapper.ApiArtistSearchResponseMapper
 import com.clara.domain.model.Artist
 import com.clara.domain.model.InternalServerErrorException
 import com.clara.domain.model.NetworkUnavailableException
+import com.clara.domain.model.TimeoutException
+import com.clara.domain.model.UnAuthorizedException
 import com.clara.domain.model.UnknownErrorException
 import com.clara.logger.Logger
 import retrofit2.HttpException
 import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 /**
@@ -51,22 +55,54 @@ class ArtistPagingSource @Inject constructor(
                 }
             )
         } catch (e: HttpException) {
-            Logger.e(message = "HttpCode: ${e.code()} " + e.message.toString())
-            when (e.code()) {
-                ApiConstants.INTERNAL_SERVER_ERROR -> LoadResult.Error(
-                    InternalServerErrorException(
-                        e.message()
-                    )
-                )
-
-                else -> LoadResult.Error(UnknownErrorException(e.message ?: ""))
-            }
+            handleHttpError(e)
         } catch (e: IOException) {
-            Logger.e(message =  e.message.toString())
-            LoadResult.Error(NetworkUnavailableException())
+            handleIoException(e)
         } catch (e: Exception) {
-            Logger.e(message =  e.message.toString())
+            Logger.e(message = e.message.toString())
             LoadResult.Error(UnknownErrorException(e.message ?: ""))
+        }
+    }
+
+    /**
+     * Handles IOExceptions that may occur during network requests.
+     *
+     * This function maps specific IOExceptions to corresponding domain-specific exceptions,
+     * such as [TimeoutException] for [SocketTimeoutException] and [NetworkUnavailableException]
+     * for [ConnectException]. For other IOExceptions, it defaults to [UnknownErrorException].
+     *
+     * @param e The [IOException] that occurred.
+     * @return A [LoadResult.Error] containing the appropriate domain-specific exception.
+     */
+    private fun handleIoException(e: IOException): LoadResult.Error<Int, Artist> {
+        Logger.e(message = e.message.toString())
+        return when (e) {
+            is SocketTimeoutException -> LoadResult.Error(TimeoutException())
+            is NetworkUnavailableException -> LoadResult.Error(NetworkUnavailableException())
+            else -> LoadResult.Error(UnknownErrorException(e.message.toString()))
+        }
+    }
+
+    /**
+     * Handles HTTP errors by mapping specific HTTP status codes to custom exceptions.
+     *
+     * This function takes an [HttpException] and returns a [LoadResult.Error] containing
+     * a specific domain exception based on the HTTP status code.
+     *
+     * @param e The [HttpException] that occurred.
+     * @return A [LoadResult.Error] containing a domain-specific exception.
+     */
+    private fun handleHttpError(e: HttpException): LoadResult.Error<Int, Artist> {
+        Logger.wtf(t = e, message = "HttpCode: ${e.code()} " + e.message.toString())
+        return when (e.code()) {
+            ApiConstants.INTERNAL_SERVER_ERROR_CODE -> LoadResult.Error(
+                InternalServerErrorException(
+                    e.message()
+                )
+            )
+
+            ApiConstants.UNAUTHORIZED_CODE -> LoadResult.Error(UnAuthorizedException(e.message()))
+            else -> LoadResult.Error(UnknownErrorException(e.message ?: ""))
         }
     }
 

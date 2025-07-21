@@ -9,7 +9,6 @@ import dagger.hilt.android.HiltAndroidApp
 class DiscogsApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        Logger.isDebug = BuildConfig.DEBUG
         Logger.init()
     }
 }
