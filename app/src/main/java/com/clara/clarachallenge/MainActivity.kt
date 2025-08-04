@@ -42,8 +42,7 @@ class MainActivity : ComponentActivity() {
                                 ?.let { artistId ->
                                     ArtistDetailScreen(
                                         artistId = artistId.toString(),
-                                        navController = navController,
-                                        onBack = { navController.popBackStack() }
+                                        navController = navController
                                     )
                                 }
                         }

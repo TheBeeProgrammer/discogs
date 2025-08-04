@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.flowOf
  * Fake implementation of [ExecutableUseCase] for testing purposes.
  * This class simulates the behavior of fetching artist releases.
  *
- * @property searchResult The flow of PagingData representing the releases to be returned. Defaults to an empty PagingData.
+ * @property searchResult The flow of PagingData representing the releases to be returned.
+ * Defaults to an empty PagingData.
  * @property lastReceivedArtistId The ID of the artist that was last received as a parameter. Defaults to -1.
  * @property callCount The number of times the [invoke] method has been called.
  */

@@ -22,12 +22,10 @@ import com.clara.logger.Logger
  * events such as error messages.
  *
  * @param artistId The ID of the artist to display details for.
- * @param onBack A lambda function to be invoked when the user navigates back.
  */
 @Composable
 fun ArtistDetailScreen(
     artistId: String,
-    onBack: () -> Unit,
     navController: NavHostController
 ) {
     ClarachallengeTheme {

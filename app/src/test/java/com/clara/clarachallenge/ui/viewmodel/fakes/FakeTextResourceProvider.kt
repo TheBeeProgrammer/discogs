@@ -11,7 +11,8 @@ class FakeTextResourceProvider : TextResourceProvider {
 
     var resources: List<Pair<Int, Any?>> = listOf()
     override fun getString(id: Int, vararg formatArgs: Any): String {
-        return resources.find { it.first == id }?.second?.toString() ?: throw NoSuchElementException("Missing element from resources list.")
+        return resources.find { it.first == id }?.second?.toString()
+            ?: throw NoSuchElementException("Missing element from resources list.")
     }
 
     override fun getString(value: String): String {
