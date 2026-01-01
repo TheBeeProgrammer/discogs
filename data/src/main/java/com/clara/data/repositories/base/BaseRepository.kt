@@ -9,11 +9,11 @@ import java.net.SocketTimeoutException
 abstract class BaseRepository {
 
     /**
-     * Executes a suspending block of code safely, catching any exceptions and returning a [com.clara.domain.usecase.base.UseCaseResult].
+     * Executes a suspending block of code safely, catching any exceptions and returning a [UseCaseResult].
      *
      * @param block The suspend function to execute.
-     * @return A [com.clara.domain.usecase.base.UseCaseResult] object, which will be [com.clara.domain.usecase.base.UseCaseResult.Success] if the block executes without exceptions,
-     * or [com.clara.domain.usecase.base.UseCaseResult.Failure] if an exception is caught.
+     * @return A [UseCaseResult] object, which will be [UseCaseResult.Success] if the block executes without exceptions,
+     * or [UseCaseResult.Failure] if an exception is caught.
      */
     protected suspend fun <T> safeCall(
         block: suspend () -> T
