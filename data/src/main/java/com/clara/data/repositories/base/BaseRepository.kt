@@ -3,8 +3,6 @@ package com.clara.data.repositories.base
 import com.clara.data.api.ApiConstants
 import com.clara.domain.model.NetworkUnavailableException
 import com.clara.domain.usecase.base.UseCaseResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
@@ -21,9 +19,7 @@ abstract class BaseRepository {
         block: suspend () -> T
     ): UseCaseResult<T> {
         return try {
-            withContext(Dispatchers.IO) {
-                UseCaseResult.Success(block())
-            }
+            UseCaseResult.Success(block())
         } catch (e: HttpException) {
             when (e.code()) {
                 ApiConstants.NOT_FOUND_CODE -> UseCaseResult.Failure(UseCaseResult.Reason.NotFound)

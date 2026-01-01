@@ -11,7 +11,9 @@ import com.clara.data.repositories.pagingsource.ArtistReleasesPagingSource
 import com.clara.domain.model.Releases
 import com.clara.domain.repositories.ArtistReleasesRepository
 import com.clara.domain.usecase.base.UseCaseResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 /**
@@ -45,6 +47,6 @@ class ArtistReleasesRepositoryImpl @Inject constructor(
                 initialLoadSize = ApiConstants.PER_PAGE
             ),
             pagingSourceFactory = { pagingSource }
-        ).flow
+        ).flow.flowOn(Dispatchers.IO)
     }
 }

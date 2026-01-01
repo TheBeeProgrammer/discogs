@@ -6,8 +6,10 @@ import com.clara.data.repositories.base.BaseRepository
 import com.clara.domain.model.ArtistDetail
 import com.clara.domain.repositories.ArtistDetailRepository
 import com.clara.domain.usecase.base.UseCaseResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 /**
@@ -31,6 +33,6 @@ class ArtistDetailRepositoryImpl @Inject constructor(
     ): UseCaseResult<Flow<ArtistDetail>> = safeCall {
         val response = apiService.getArtistDetails(artistId)
         val artist = mapper.map(response)
-        flowOf(artist)
+        flowOf(artist).flowOn(Dispatchers.IO)
     }
 }
