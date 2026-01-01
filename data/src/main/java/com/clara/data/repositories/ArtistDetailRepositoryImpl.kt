@@ -36,7 +36,7 @@ class ArtistDetailRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO){
             val response = apiService.getArtistDetails(artistId)
             val artist = mapper.map(response)
-            flowOf(artist).flowOn(Dispatchers.IO)
+            flowOf(artist)
         }
     }
 }
