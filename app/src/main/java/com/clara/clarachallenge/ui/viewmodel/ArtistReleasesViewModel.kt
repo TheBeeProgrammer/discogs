@@ -2,6 +2,7 @@ package com.clara.clarachallenge.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.clara.clarachallenge.ui.state.ReleaseListAction
 import com.clara.clarachallenge.ui.state.ReleaseListEvent
 import com.clara.clarachallenge.ui.state.ReleaseListState
