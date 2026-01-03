@@ -19,8 +19,8 @@ import javax.inject.Inject
  *
  * This class handles the interaction with the [DiscogsApiService] for network requests
  * and uses an [ApiArtistSearchResponseMapper] to transform the API response into
- * domain models. It leverages the Paging 3 library to provide efficient data loading.
- * It extends [com.clara.data.repositories.base.BaseRepository] to handle API call safety and error management.
+ * domain models. It leverages the Paging 3 library via [ArtistPagingSource] to
+ * provide efficient, paginated data loading.
  *
  * @param apiService The service responsible for making API calls to Discogs.
  * @param mapper The mapper responsible for converting API responses to domain models.

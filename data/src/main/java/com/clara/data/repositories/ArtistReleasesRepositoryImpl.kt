@@ -6,7 +6,6 @@ import androidx.paging.PagingData
 import com.clara.data.api.ApiConstants
 import com.clara.data.api.DiscogsApiService
 import com.clara.data.mapper.ApiArtistReleaseResponseMapper
-import com.clara.data.repositories.base.BaseRepository
 import com.clara.data.repositories.pagingsource.ArtistReleasesPagingSource
 import com.clara.domain.model.Releases
 import com.clara.domain.repositories.ArtistReleasesRepository
@@ -15,16 +14,18 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 /**
- * Implementation of [ArtistReleasesRepository] that fetches artist releases data
- * from the Discogs API.
+ * Concrete implementation of [ArtistReleasesRepository].
  *
- * @property apiService The [DiscogsApiService] instance for making API calls.
- * @property mapper The [ApiArtistReleaseResponseMapper] instance for mapping API responses to domain models.
+ * This repository is responsible for fetching paginated artist releases data from the remote
+ * data source, which is the Discogs API. It uses a [Pager] to create a stream of [PagingData].
+ *
+ * @param apiService The service class for interacting with the Discogs API.
+ * @param mapper The mapper responsible for converting API response models to domain models.
  */
 class ArtistReleasesRepositoryImpl @Inject constructor(
     private val apiService: DiscogsApiService,
     private val mapper: ApiArtistReleaseResponseMapper
-) : ArtistReleasesRepository, BaseRepository() {
+) : ArtistReleasesRepository {
     /**
      * Fetches a paginated list of releases for a given artist.
      *

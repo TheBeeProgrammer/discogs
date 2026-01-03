@@ -58,7 +58,7 @@ class ArtistReleasesViewModel @Inject constructor(
     private fun loadReleases(artistId: Int) {
         viewModelScope.launch {
             artistReleasesUseCase(artistId)
-               // .cachedIn(viewModelScope)
+                .cachedIn(viewModelScope)
                 .collect { pagingData ->
                     _pagedReleases.value = pagingData
                 }
