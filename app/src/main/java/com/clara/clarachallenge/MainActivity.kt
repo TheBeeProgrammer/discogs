@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(Screen.ArtistDetail.route) { backStackEntry ->
-                            backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
+                            backStackEntry.arguments?.getInt("artistId")
                                 ?.let { artistId ->
                                     ArtistDetailScreen(
                                         artistId = artistId.toString(),
@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(Screen.Releases.route) { backStackEntry ->
-                            backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
+                            backStackEntry.arguments?.getInt("artistId")
                                 ?.let { artistId ->
                                     ReleaseListScreen(
                                         artistId = artistId,

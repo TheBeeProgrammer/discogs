@@ -13,7 +13,7 @@ class ApiArtistReleaseResponseMapper @Inject constructor() :
     override fun map(from: ArtistReleasesResponse): PaginatedResult<List<Releases>> {
         val releases = from.releases.map {
             Releases(
-                id = it.id.toString(),
+                id = it.id,
                 title = it.title,
                 releaseYear = it.year.toString(),
                 imageUrl = it.thumbnail
