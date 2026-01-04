@@ -35,4 +35,5 @@
     <string name="releases_not_found">Releases not found</string>
     <string name="empty_releases_message">No releases found for this artist</string>
     <string name="releases_label">Releases</string>
+    <string name="artist_id_missing">Artist ID is missing. Please go back.</string>
 </resources>
