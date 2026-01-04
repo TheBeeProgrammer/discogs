@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.clara.clarachallenge.ui.common.Screen
+import com.clara.clarachallenge.ui.common.ValidateIntParam
 import com.clara.clarachallenge.ui.components.screens.artistdetail.ArtistDetailScreen
 import com.clara.clarachallenge.ui.components.screens.release.ReleaseListScreen
 import com.clara.clarachallenge.ui.components.screens.search.SearchScreen
@@ -38,28 +39,32 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(Screen.ArtistDetail.route) { backStackEntry ->
-                            backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
-                                ?.let { artistId ->
-                                    ArtistDetailScreen(
-                                        artistId = artistId.toString(),
-                                        navController = navController
-                                    )
-                                }
+                            ValidateIntParam(
+                                paramName = "artistId",
+                                backStackEntry = backStackEntry,
+                                navController = navController
+                            ) { artistId ->
+                                ArtistDetailScreen(
+                                    artistId = artistId,
+                                    navController = navController
+                                )
+                            }
                         }
 
                         composable(Screen.Releases.route) { backStackEntry ->
-                            backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
-                                ?.let { artistId ->
-                                    ReleaseListScreen(
-                                        artistId = artistId
-                                    )
-                                }
+                            ValidateIntParam(
+                                paramName = "artistId",
+                                backStackEntry = backStackEntry,
+                                navController = navController
+                            ) { artistId ->
+                                ReleaseListScreen(
+                                    artistId = artistId
+                                )
+                            }
                         }
                     }
-
                 }
             }
         }
-
     }
 }

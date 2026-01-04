@@ -25,7 +25,7 @@ import com.clara.logger.Logger
  */
 @Composable
 fun ArtistDetailScreen(
-    artistId: String,
+    artistId: Int,
     navController: NavHostController
 ) {
     ClarachallengeTheme {

@@ -23,7 +23,7 @@ class ApiArtistSearchResponseMapper @Inject constructor() :
     override fun map(from: ApiArtistSearchResponse): PaginatedResult<List<Artist>> {
         val artists = from.results.map {
             Artist(
-                id = it.id.toString(),
+                id = it.id,
                 name = it.title,
                 imageUrl = it.thumb.takeIf { thumb -> !thumb.isNullOrBlank() }
             )

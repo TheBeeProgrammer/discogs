@@ -63,11 +63,11 @@ class ArtistDetailViewModelTest {
     @Test
     fun `when sending LoadArtist with success then updates to Success`() = testScope.runTest {
         // Arrange
-        val artist = ArtistDetail("1", "Artist Name", "image.jpg", emptyList())
+        val artist = ArtistDetail("Artist Name", "profile", "image.jpg", emptyList())
         fakeUseCase.result = UseCaseResult.Success(flowOf(artist))
 
         // Act
-        viewModel.sendAction(ArtistDetailAction.LoadArtist("123"))
+        viewModel.sendAction(ArtistDetailAction.LoadArtist(123))
         advanceUntilIdle()
 
         // Assert
@@ -79,15 +79,15 @@ class ArtistDetailViewModelTest {
     @Test
     fun `when sending LoadArtist then use case is called with correct id`() = testScope.runTest {
         // Arrange
-        val artist = ArtistDetail("1", "Artist Name", "image.jpg", emptyList())
+        val artist = ArtistDetail("Artist Name", "profile", "image.jpg", emptyList())
         fakeUseCase.result = UseCaseResult.Success(flowOf(artist))
 
         // Act
-        viewModel.sendAction(ArtistDetailAction.LoadArtist("456"))
+        viewModel.sendAction(ArtistDetailAction.LoadArtist(456))
         advanceUntilIdle()
 
         // Assert
-        assertEquals("456", fakeUseCase.receivedId.toString())
+        assertEquals(456, fakeUseCase.receivedId)
     }
 
     @Test
@@ -104,7 +104,7 @@ class ArtistDetailViewModelTest {
         }
 
         // Act
-        viewModel.sendAction(ArtistDetailAction.LoadArtist("999"))
+        viewModel.sendAction(ArtistDetailAction.LoadArtist(999))
         advanceUntilIdle()
 
         // Assert
@@ -125,13 +125,13 @@ class ArtistDetailViewModelTest {
 
     @Test
     fun `when LoadArtist succeeds, no event is emitted`() = testScope.runTest {
-        val artist = ArtistDetail("1", "Artist", "img.jpg", emptyList())
+        val artist = ArtistDetail("Artist", "profile", "img.jpg", emptyList())
         fakeUseCase.result = UseCaseResult.Success(flowOf(artist))
 
         val events = mutableListOf<ArtistDetailEvent>()
         val job = launch { viewModel.events.collect { events.add(it) } }
 
-        viewModel.sendAction(ArtistDetailAction.LoadArtist("1"))
+        viewModel.sendAction(ArtistDetailAction.LoadArtist(1))
         advanceUntilIdle()
 
         assertTrue(events.isEmpty())
