@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -38,25 +39,34 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(Screen.ArtistDetail.route) { backStackEntry ->
-                            backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
-                                ?.let { artistId ->
-                                    ArtistDetailScreen(
-                                        artistId = artistId,
-                                        navController = navController
-                                    )
+                            val artistId =
+                                backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
+                            if (artistId != null) {
+                                ArtistDetailScreen(
+                                    artistId = artistId,
+                                    navController = navController
+                                )
+                            } else {
+                                LaunchedEffect(Unit) {
+                                    navController.popBackStack()
                                 }
+                            }
                         }
 
                         composable(Screen.Releases.route) { backStackEntry ->
-                            backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
-                                ?.let { artistId ->
-                                    ReleaseListScreen(
-                                        artistId = artistId
-                                    )
+                            val artistId =
+                                backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
+                            if (artistId != null) {
+                                ReleaseListScreen(
+                                    artistId = artistId
+                                )
+                            } else {
+                                LaunchedEffect(Unit) {
+                                    navController.popBackStack()
                                 }
+                            }
                         }
                     }
-
                 }
             }
         }
