@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                             backStackEntry.arguments?.getInt("artistId")
                                 ?.let { artistId ->
                                     ArtistDetailScreen(
-                                        artistId = artistId,
+                                        artistId = artistId.toString(),
                                         navController = navController,
                                         onBack = { navController.popBackStack() }
                                     )

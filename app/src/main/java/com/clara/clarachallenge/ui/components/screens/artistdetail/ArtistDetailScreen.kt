@@ -26,7 +26,7 @@ import com.clara.logger.Logger
  */
 @Composable
 fun ArtistDetailScreen(
-    artistId: Int,
+    artistId: String,
     onBack: () -> Unit,
     navController: NavHostController
 ) {
