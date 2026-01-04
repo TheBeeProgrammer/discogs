@@ -19,7 +19,7 @@ fun ValidateIntParam(
         onValid(paramValue)
     } else {
         ErrorView(
-            message = stringResource(id = R.string.artist_id_missing),
+            message = stringResource(id = R.string.unknown_error),
             onRetry = { navController.popBackStack() }
         )
     }
