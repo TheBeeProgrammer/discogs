@@ -25,7 +25,7 @@ import com.clara.logger.Logger
  */
 @Composable
 fun ArtistDetailScreen(
-    artistId: String,
+    artistId: Int,
     navController: NavHostController
 ) {
     ClarachallengeTheme {
@@ -50,7 +50,7 @@ fun ArtistDetailScreen(
 
         ArtistDetailContent(
             artistDetailState = state,
-            onRetry = { viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId)) },
+            onRetry = { viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId.toString())) },
             viewReleasesClick = {
                 navController.navigate(Screen.Releases.createRoute(artistId))
             })
