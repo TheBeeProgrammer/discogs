@@ -50,7 +50,7 @@ fun ArtistDetailScreen(
 
         ArtistDetailContent(
             artistDetailState = state,
-            onRetry = { viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId.toString())) },
+            onRetry = { viewModel.sendAction(ArtistDetailAction.LoadArtist(artistId)) },
             viewReleasesClick = {
                 navController.navigate(Screen.Releases.createRoute(artistId))
             })
