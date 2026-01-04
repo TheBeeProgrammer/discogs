@@ -7,16 +7,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.clara.clarachallenge.R
 import com.clara.clarachallenge.ui.common.Screen
+import com.clara.clarachallenge.ui.common.ValidateIntParam
 import com.clara.clarachallenge.ui.components.screens.artistdetail.ArtistDetailScreen
 import com.clara.clarachallenge.ui.components.screens.release.ReleaseListScreen
 import com.clara.clarachallenge.ui.components.screens.search.SearchScreen
-import com.clara.clarachallenge.ui.components.shared.ErrorView
 import com.clara.clarachallenge.ui.theme.ClarachallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,32 +39,26 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(Screen.ArtistDetail.route) { backStackEntry ->
-                            val artistId =
-                                backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
-                            if (artistId != null) {
+                            ValidateIntParam(
+                                paramName = "artistId",
+                                backStackEntry = backStackEntry,
+                                navController = navController
+                            ) { artistId ->
                                 ArtistDetailScreen(
                                     artistId = artistId,
                                     navController = navController
-                                )
-                            } else {
-                                ErrorView(
-                                    message = stringResource(id = R.string.artist_id_missing),
-                                    onRetry = { navController.popBackStack() }
                                 )
                             }
                         }
 
                         composable(Screen.Releases.route) { backStackEntry ->
-                            val artistId =
-                                backStackEntry.arguments?.getString("artistId")?.toIntOrNull()
-                            if (artistId != null) {
+                            ValidateIntParam(
+                                paramName = "artistId",
+                                backStackEntry = backStackEntry,
+                                navController = navController
+                            ) { artistId ->
                                 ReleaseListScreen(
                                     artistId = artistId
-                                )
-                            } else {
-                                ErrorView(
-                                    message = stringResource(id = R.string.artist_id_missing),
-                                    onRetry = { navController.popBackStack() }
                                 )
                             }
                         }
