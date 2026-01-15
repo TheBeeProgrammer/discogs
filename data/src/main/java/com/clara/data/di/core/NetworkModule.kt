@@ -15,6 +15,10 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.Cache
+import java.io.File
 import javax.inject.Singleton
 
 @Module
@@ -49,14 +53,19 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
+        @ApplicationContext context: Context,
         networkStatusInterceptor: NetworkStatusInterceptor,
         authInterceptor: DiscogsAuthInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
+        val cacheSize = (10 * 1024 * 1024).toLong() // 10 MB
+        val httpCacheDirectory = File(context.cacheDir, "http_cache")
+        val cache = Cache(httpCacheDirectory, cacheSize)
         return OkHttpClient.Builder()
             .addInterceptor(networkStatusInterceptor)
             .addInterceptor(authInterceptor)
             .addInterceptor(loggingInterceptor)
+            .cache(cache)
             .build()
     }
 
